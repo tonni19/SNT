@@ -1,9 +1,16 @@
+# dependencies and build output
+node_modules/
+dist/
+.astro/
+
 # tool output and scratch folders
 .taste-skill/
 .playwright-cli/
 graphify-out/
+.impeccable/
 
 # OS and editor files
 .DS_Store
 Thumbs.db
 .vscode/
+node_modules

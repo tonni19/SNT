@@ -1,0 +1,50 @@
+---
+/**
+ * The home page: the whole desk, room by room. Each room is its own component
+ * in src/components; reorder them here (and in `sections` in src/data/site.ts).
+ */
+import Base from '../layouts/Base.astro';
+import Boot from '../components/Boot.astro';
+import HomeRoom from '../components/HomeRoom.astro';
+import WorkRoom from '../components/WorkRoom.astro';
+import UiuxRoom from '../components/UiuxRoom.astro';
+import ArtRoom from '../components/ArtRoom.astro';
+import ResearchRoom from '../components/ResearchRoom.astro';
+import AchievementsRoom from '../components/AchievementsRoom.astro';
+import ProfileRoom from '../components/ProfileRoom.astro';
+import TimelineRoom from '../components/TimelineRoom.astro';
+import ContactRoom from '../components/ContactRoom.astro';
+import * as data from '../data/site';
+
+// everything the desk's behaviour script needs, handed over as JSON
+const clientData = {
+  ...data.site,
+  sections: data.sections,
+  dialogue: data.dialogue,
+  profile: data.profile,
+  interests: data.interests,
+  files: data.files,
+  timeline: data.timeline,
+  links: data.links,
+  memo: data.memo,
+  dreadMemo: data.dreadMemo,
+};
+---
+<Base current="home" bodyClass="is-locked">
+  <Boot slot="before" />
+  <main class="stage" id="stage">
+    <HomeRoom />
+    <WorkRoom />
+    <UiuxRoom />
+    <ArtRoom />
+    <ResearchRoom />
+    <AchievementsRoom />
+    <ProfileRoom />
+    <TimelineRoom />
+    <ContactRoom />
+  </main>
+  <script type="application/json" id="site-data" set:html={JSON.stringify(clientData)} />
+  <script>
+    import '../scripts/desk.js';
+  </script>
+</Base>

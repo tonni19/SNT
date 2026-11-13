@@ -1,0 +1,32 @@
+---
+/**
+ * RESEARCH: a card-catalogue drawer of papers, posters and preprints from
+ * src/content/research. Newest first.
+ */
+import { getCollection } from 'astro:content';
+import Crt from './Crt.astro';
+import ResearchCard from './ResearchCard.astro';
+
+const papers = (await getCollection('research', ({ data }) => !data.draft)).sort((a, b) => b.data.year - a.data.year);
+const counts = papers.reduce<Record<string, number>>((m, p) => ((m[p.data.type] = (m[p.data.type] || 0) + 1), m), {});
+---
+<section class="room room--wide room--research" id="research" data-room="research" aria-labelledby="researchTitle">
+  <header class="room__head">
+    <h2 class="room__title" id="researchTitle">Research</h2>
+    <p class="room__lead">AI × HCI: how people understand the rules machines follow. Papers, posters and preprints, with links to arXiv and Google Scholar as they go public.</p>
+  </header>
+
+  <Crt channel="card catalogue">
+    <div class="scene scene--research" id="scene-research">
+      <div class="drawer">
+        <div class="drawer__label">
+          <span>INDEX</span>
+          <span>{papers.length} {papers.length === 1 ? 'record' : 'records'}{Object.entries(counts).map(([t, n]) => ` · ${n} ${t}${n > 1 ? 's' : ''}`).join('')}</span>
+        </div>
+        {papers.length
+          ? <div class="drawer__cards">{papers.map((p) => <ResearchCard entry={p} />)}</div>
+          : <p class="drawer__empty">The drawer is empty for now.</p>}
+      </div>
+    </div>
+  </Crt>
+</section>

@@ -1,0 +1,45 @@
+---
+/** One page per analysis, case study or recreation in src/content/uiux. */
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import Crt from '../../components/Crt.astro';
+import Icon from '../../components/Icon.astro';
+
+export async function getStaticPaths() {
+  const items = await getCollection('uiux', ({ data }) => !data.draft);
+  return items.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}
+interface Props { entry: CollectionEntry<'uiux'>; }
+const { entry } = Astro.props;
+const d = entry.data;
+const { Content } = await render(entry);
+const TYPE = { analysis: 'Product analysis', 'case-study': 'Case study', recreation: 'Recreation' };
+---
+<Base title={`${d.title} · UI/UX · Sadia Noman Tonni`} description={d.summary} current="uiux">
+  <main class="stage">
+    <section class="room room--doc" aria-labelledby="docTitle">
+      <header class="room__head">
+        <h1 class="room__title" id="docTitle">{d.title}</h1>
+        <p class="room__lead">{d.summary}</p>
+      </header>
+      <Crt channel="design lab" back={{ href: '/#uiux', label: 'UI/UX lab' }}>
+        <div class="scene scene--doc">
+          <ul class="doc-meta">
+            <li>{TYPE[d.type]}</li>
+            <li>Product: <b>{d.product}</b></li>
+            {d.role && <li>Role: <b>{d.role}</b></li>}
+            {d.tools.length > 0 && <li>Tools: <b>{d.tools.join(', ')}</b></li>}
+            <li>{d.date.toLocaleDateString('en-GB', { month: 'long', year: 'numeric' })}{d.status === 'in-progress' ? ' · in progress' : ''}</li>
+          </ul>
+          <article class="doc"><Content /></article>
+          {d.links.length > 0 && (
+            <div class="doc">
+              <h2>Links</h2>
+              <ul>{d.links.map((l) => <li><a href={l.url} target="_blank" rel="noopener">{l.label} <Icon name="arrow-up-right" /></a></li>)}</ul>
+            </div>
+          )}
+        </div>
+      </Crt>
+    </section>
+  </main>
+</Base>

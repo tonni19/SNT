@@ -1,0 +1,103 @@
+---
+import Icon from './Icon.astro';
+import { site } from '../data/site';
+---
+    <section class="room room--home" id="home" data-room="home" aria-labelledby="homeName">
+      <div class="hero__text">
+        <h1 class="hero__name glitch-text" id="homeName" data-text="Sadia Noman Tonni"><span>Sadia Noman</span> <span>Tonni</span></h1>
+        <p class="hero__lead" id="homeRole">I draw as Tortilla, make game art and interfaces, and research how people understand AI.</p>
+        <p class="hero__note">Studying at United International University. Currently: a poster paper for ACM IUI 2027.</p>
+        <div class="hero__actions">
+          <a class="btn btn--primary" href="#work" data-go="work">See my work <Icon name="arrow-down" /></a>
+          <a class="btn btn--quiet" href="#research" data-go="research">Research <Icon name="flask" /></a>
+          <a class="btn btn--quiet" href={site.github} target="_blank" rel="noopener">GitHub <Icon name="github" /></a>
+        </div>
+
+        <div class="desk desk--hero">
+          <!-- LCD DEVICE -->
+          <div class="lcd" data-ui>
+            <div class="lcd__screen">
+              <span class="lcd__big" id="lcdBig">HOME</span>
+              <div class="lcd__side">
+                <span class="lcd__clock" id="lcdClock">1<i>:</i>44</span>
+                <button class="lcd__sound" id="soundBtn" aria-pressed="false" aria-label="Toggle ambient sound">
+                  <span class="lcd__play"><Icon name="play" /></span><span class="lcd__pause"><Icon name="pause" /></span>
+                </button>
+              </div>
+              <div class="lcd__track"><span id="lcdTrack"></span></div>
+            </div>
+          </div>
+          <!-- STICKY NOTE -->
+          <a class="sticky sticky--yellow" id="stickyArt" href="#art" data-go="art">
+            <span class="sticky__big">my ART</span>
+            <span class="sticky__small">lives over here <Icon name="arrow-right" /></span>
+          </a>
+        </div>
+      </div>
+
+      <div class="crt" data-ui>
+        <div class="crt__bezel">
+          <div class="crt__screen">
+            <div class="screen__ui">
+              <div class="viewport">
+                <div class="scene scene--home" id="scene-home">
+                  <div class="hall" aria-hidden="true">
+                    <div class="hall__ceil"></div>
+                    <div class="hall__floor"></div>
+                    <div class="hall__wall hall__wall--l"></div>
+                    <div class="hall__wall hall__wall--r"></div>
+                    <div class="hall__end"><div class="door"><div class="door__leak"></div></div></div>
+                    <div class="hall__lamp"></div>
+                  </div>
+
+                  <figure class="figure" aria-label="Self-portrait placeholder">
+                    <!-- Replace this SVG with your own illustration later (keep class="pupil" on pupils for eye-tracking) -->
+                    <svg viewBox="0 0 200 320" id="figure">
+                      <path d="M34 320 C40 240 68 208 100 204 C132 208 160 240 166 320 Z" fill="#2c2d6b"/>
+                      <path d="M58 320 C64 268 80 238 100 232 C120 238 136 268 142 320 Z" fill="#232257"/>
+                      <path d="M82 210 L100 242 L118 210 Z" fill="#f3b73f"/>
+                      <path d="M46 122 C44 46 156 46 154 122 L162 236 L134 214 L128 152 L72 152 L66 214 L38 236 Z" fill="#170f2e"/>
+                      <path d="M66 106 C66 70 134 70 134 106 L134 150 C134 180 112 198 100 198 C88 198 66 180 66 150 Z" fill="#f1c7b0"/>
+                      <path d="M100 74 C121 74 134 88 134 106 L134 150 C134 180 112 198 100 198 Z" fill="#4a9e98"/>
+                      <path d="M56 118 C58 58 142 58 144 118 L130 100 L120 116 L110 92 L98 114 L88 90 L78 114 L68 102 Z" fill="#170f2e"/>
+                      <g class="eye"><ellipse cx="84" cy="134" rx="9.5" ry="6.5" fill="#fff6f2"/><circle class="pupil" cx="84" cy="134" r="3.4" fill="#170f2e"/></g>
+                      <g class="eye"><ellipse cx="116" cy="134" rx="9.5" ry="6.5" fill="#fff6f2"/><circle class="pupil" cx="116" cy="134" r="3.4" fill="#170f2e"/></g>
+                      <path d="M93 170 h14" stroke="#170f2e" stroke-width="2.4" stroke-linecap="square"/>
+                      <path d="M126 160 l6 3 -6 3" fill="none" stroke="#170f2e" stroke-width="1.6"/>
+                    </svg>
+                  </figure>
+
+                  <div class="win dialog" id="dialog">
+                    <div class="win__title"><span id="dialogTitle">???</span><button class="win__x" aria-label="Skip dialogue" id="dialogSkip"><Icon name="x" /></button></div>
+                    <div class="win__body">
+                      <p class="dialog__text" id="dialogText" aria-live="polite"></p>
+                      <div class="dialog__choices" id="dialogChoices">
+                        <button class="btn95" data-go="profile">Who are you?</button>
+                        <button class="btn95" data-go="work">Show me your work</button>
+                      </div>
+                      <span class="dialog__more" id="dialogMore" aria-hidden="true"><Icon name="chevron-down" /></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <aside class="folders" aria-label="Desktop folders">
+                <a class="folder" id="artFolder" href="#art" data-go="art"><span class="folder__ico"></span><span>art</span></a>
+                <button class="folder" id="lockedFolder"><span class="folder__ico folder__ico--dark"></span><span>dont_<br>open</span></button>
+              </aside>
+              <div class="hourglass" aria-hidden="true"><Icon name="hourglass" /></div>
+              <div class="subliminal" id="subliminal" aria-hidden="true"></div>
+            </div>
+            <canvas class="static" width="160" height="100" aria-hidden="true"></canvas>
+            <div class="scanlines" aria-hidden="true"></div>
+            <div class="glass" aria-hidden="true"></div>
+          </div>
+          <div class="crt__chin">
+            <button class="chin-arrow" data-nav="prev" aria-label="Previous section"><Icon name="chevron-left" /></button>
+            <span class="brand">MNEMOS-87 <b>· the hallway</b></span>
+            <i class="power__led" aria-hidden="true"></i>
+            <button class="chin-arrow" data-nav="next" aria-label="Next section"><Icon name="chevron-right" /></button>
+          </div>
+        </div>
+      </div>
+    </section>

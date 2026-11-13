@@ -1,0 +1,75 @@
+---
+/**
+ * ACHIEVEMENTS & EVENTS: an arcade-style high-score board. Each row opens to
+ * what I learned, what it was like, and my honest verdict. Entries come from
+ * src/content/achievements (newest first).
+ */
+import { getCollection } from 'astro:content';
+import Icon from './Icon.astro';
+import Crt from './Crt.astro';
+
+const items = (await getCollection('achievements', ({ data }) => !data.draft)).sort((a, b) => +b.data.date - +a.data.date);
+const fmt = (d: Date) => d.toLocaleDateString('en-GB', { month: 'short', year: 'numeric' });
+const TYPE: Record<string, string> = { competition: 'Competition', hackathon: 'Hackathon', 'game-jam': 'Game jam', event: 'Event', workshop: 'Workshop', volunteering: 'Volunteering', other: 'Other' };
+---
+<section class="room room--wide room--achievements" id="achievements" data-room="achievements" aria-labelledby="achTitle">
+  <header class="room__head">
+    <h2 class="room__title" id="achTitle">Achievements &amp; events</h2>
+    <p class="room__lead">Competitions, game jams and events I've taken part in: what I achieved, what I learned, and my honest verdict on each.</p>
+  </header>
+
+  <Crt channel="high scores">
+    <div class="scene scene--achievements" id="scene-achievements">
+      <div class="board">
+        <div class="board__head" aria-hidden="true">
+          <span>DATE</span><span>EVENT</span><span>RESULT</span><span></span>
+        </div>
+        {items.length ? (
+          <ol class="board__rows">
+            {items.map((a) => (
+              <li class="board__row">
+                <details>
+                  <summary>
+                    <span class="board__date">{fmt(a.data.date)}</span>
+                    <span class="board__event"><b>{a.data.event}</b><small>{TYPE[a.data.type]}{a.data.role ? ` · ${a.data.role}` : ''}</small></span>
+                    <span class="board__result">{a.data.result}</span>
+                    <span class="board__toggle"><Icon name="chevron-down" /></span>
+                  </summary>
+                  <div class="board__detail">
+                    {(a.data.team_members.length > 0 || a.data.tools.length > 0) && (
+                      <p class="board__facts">
+                        {a.data.team && <span><Icon name="users" /> {a.data.team}{a.data.team_members.length > 0 ? `: ${a.data.team_members.join(', ')}` : ''}</span>}
+                        {a.data.tools.length > 0 && <span><Icon name="code" /> {a.data.tools.join(' · ')}</span>}
+                      </p>
+                    )}
+                    {[['What I learned', a.data.learned], ['The experience', a.data.experience], ['My verdict', a.data.verdict]].map(([h, text], k) => (
+                      <div>
+                        <h4>{h}</h4>
+                        {text ? <p>{text}</p> : <p class="board__pending">Reflection coming soon.</p>}
+                        {k === 2 && a.data.rating && <p class="board__stars" aria-label={`${a.data.rating} out of 5`}>{[1, 2, 3, 4, 5].map((n) => <Icon name="star" class={n <= a.data.rating! ? 'on' : ''} />)}</p>}
+                      </div>
+                    ))}
+                    <p class="board__more">
+                      <a href={`/achievements/${a.id}/`}>The full story <Icon name="arrow-right" /></a>
+                      {a.data.links[0] && <a href={a.data.links[0].url} target="_blank" rel="noopener">{a.data.links[0].label} <Icon name="arrow-up-right" /></a>}
+                    </p>
+                  </div>
+                </details>
+              </li>
+            ))}
+          </ol>
+        ) : (
+          <div class="board__empty">
+            <p class="board__blink">INSERT COIN</p>
+            <p>No entries logged yet. Competitions, game jams and events will appear here, each with what I learned, how it went, and my verdict.</p>
+            <ol class="board__ghosts" aria-hidden="true">
+              <li><span>1ST</span><span>---------</span><span>-----</span></li>
+              <li><span>2ND</span><span>---------</span><span>-----</span></li>
+              <li><span>3RD</span><span>---------</span><span>-----</span></li>
+            </ol>
+          </div>
+        )}
+      </div>
+    </div>
+  </Crt>
+</section>

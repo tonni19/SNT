@@ -1,0 +1,47 @@
+---
+/**
+ * One publication as a library index card: authors, venue, status, summary,
+ * and every link it may have. Links that don't exist yet show as "soon".
+ */
+import type { CollectionEntry } from 'astro:content';
+import Icon from './Icon.astro';
+interface Props { entry: CollectionEntry<'research'>; full?: boolean; }
+const { entry, full = false } = Astro.props;
+const d = entry.data;
+const slots = [
+  { key: 'arxiv', label: 'arXiv', icon: 'file-text', url: d.arxiv },
+  { key: 'scholar', label: 'Google Scholar', icon: 'graduation-cap', url: d.scholar },
+  { key: 'doi', label: 'DOI', icon: 'book-open', url: d.doi },
+  { key: 'pdf', label: 'PDF', icon: 'file-text', url: d.pdf },
+  { key: 'poster', label: 'Poster', icon: 'layout', url: d.poster },
+  { key: 'code', label: 'Code & data', icon: 'code', url: d.code },
+];
+// doi/poster are optional extras: hide them entirely when absent; the core four always show
+const shown = slots.filter((s) => s.url || ['arxiv', 'scholar', 'pdf', 'code'].includes(s.key));
+---
+<article class="card" data-type={d.type}>
+  <div class="card__top">
+    <span class="card__type">{d.type}</span>
+    <span class="card__venue">{d.venue}</span>
+    <span class="card__year">{d.year}</span>
+  </div>
+  {full ? <h1 class="card__title">{d.title}</h1> : <h3 class="card__title"><a href={`/research/${entry.id}/`}>{d.title}</a></h3>}
+  <p class="card__authors">{d.authors.map((a, i) => <span class:list={{ me: a === 'Sadia Noman Tonni' }}>{a}{i < d.authors.length - 1 ? ', ' : ''}</span>)}</p>
+  <p class="card__status"><i aria-hidden="true"></i>{d.status}</p>
+  {!full && <p class="card__summary">{d.summary}</p>}
+  <ul class="card__links">
+    {shown.map((s) => (
+      <li>
+        {s.url
+          ? <a href={s.url} target="_blank" rel="noopener"><Icon name={s.icon} />{s.label}</a>
+          : <span class="is-soon" title="Not public yet"><Icon name={s.icon} />{s.label} <em>soon</em></span>}
+      </li>
+    ))}
+    <li>
+      {d.bibtex
+        ? <button type="button" data-copy={d.bibtex}><Icon name="copy" /><span>Copy BibTeX</span></button>
+        : <span class="is-soon" title="Citation appears with the preprint"><Icon name="copy" />Cite <em>soon</em></span>}
+    </li>
+    {!full && <li class="card__more"><a href={`/research/${entry.id}/`}>Read more <Icon name="arrow-right" /></a></li>}
+  </ul>
+</article>

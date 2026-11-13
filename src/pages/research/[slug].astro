@@ -1,0 +1,33 @@
+---
+/** One page per paper, poster or preprint in src/content/research. */
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import Crt from '../../components/Crt.astro';
+import ResearchCard from '../../components/ResearchCard.astro';
+
+export async function getStaticPaths() {
+  const papers = await getCollection('research', ({ data }) => !data.draft);
+  return papers.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}
+interface Props { entry: CollectionEntry<'research'>; }
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+---
+<Base title={`${entry.data.title} · Research · Sadia Noman Tonni`} description={entry.data.summary} current="research">
+  <main class="stage">
+    <section class="room room--doc" aria-labelledby="docTitle">
+      <Crt channel="card catalogue" back={{ href: '/#research', label: 'All research' }}>
+        <div class="scene scene--doc scene--research">
+          <div class="doc-card" id="docTitle"><ResearchCard entry={entry} full /></div>
+          <article class="doc"><Content /></article>
+          {entry.data.bibtex && (
+            <div class="doc">
+              <h2>Cite</h2>
+              <pre class="doc-bib"><code>{entry.data.bibtex}</code></pre>
+            </div>
+          )}
+        </div>
+      </Crt>
+    </section>
+  </main>
+</Base>

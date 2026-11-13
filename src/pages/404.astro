@@ -1,0 +1,19 @@
+---
+import Base from '../layouts/Base.astro';
+import Crt from '../components/Crt.astro';
+---
+<Base title="No signal · Sadia Noman Tonni">
+  <main class="stage">
+    <section class="room room--doc" aria-labelledby="lostTitle">
+      <header class="room__head">
+        <h1 class="room__title" id="lostTitle">No signal</h1>
+        <p class="room__lead">This room doesn't exist. Or it did, and something moved it.</p>
+      </header>
+      <Crt channel="channel 404" back={{ href: '/', label: 'Back to the desk' }}>
+        <div class="scene scene--doc">
+          <div class="doc"><p>Check the address, or go back to the desk and take the stairs you know.</p></div>
+        </div>
+      </Crt>
+    </section>
+  </main>
+</Base>

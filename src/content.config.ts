@@ -1,0 +1,106 @@
+/**
+ * Content collections: everything that grows over time lives in src/content/.
+ * Add a file, save, and it appears on the site. The schemas below check every
+ * field when you run `npm run dev` or `npm run build`, so a typo is caught early.
+ *
+ * Files whose name starts with "_" (like _TEMPLATE.md) are ignored, so templates
+ * can sit next to real entries. Set `draft: true` to keep an entry off the site.
+ */
+import { defineCollection } from 'astro:content';
+import { glob, file } from 'astro/loaders';
+import { z } from 'astro/zod';
+
+const link = z.object({
+  label: z.string(),
+  url: z.url(),
+});
+
+/* ---------------------------------------------------------------- art
+   One entry per piece. Each links straight to that artwork's own page on the
+   art portfolio, so visitors land on the piece they clicked, not the homepage. */
+const art = defineCollection({
+  loader: file('src/content/art.json'),
+  schema: ({ image }) =>
+    z.object({
+      title: z.string(),
+      category: z.enum(['portrait', 'game-characters', 'comic', 'animation', 'custom', 'wallpaper']),
+      /** Path on the art portfolio, e.g. "/art/portrait/cosmos" or "/comic/ants". */
+      path: z.string().startsWith('/'),
+      image: image(),
+      featured: z.boolean().default(false),
+      order: z.number().default(0),
+    }),
+});
+
+/* --------------------------------------------------------------- ui/ux
+   Product website analyses, case studies and recreations. The markdown body
+   becomes the case study page at /uiux/<file-name>/. */
+const uiux = defineCollection({
+  loader: glob({ pattern: '**/[^_]*.md', base: './src/content/uiux' }),
+  schema: z.object({
+    title: z.string(),
+    product: z.string(),
+    type: z.enum(['analysis', 'case-study', 'recreation']),
+    summary: z.string(),
+    date: z.coerce.date(),
+    status: z.enum(['in-progress', 'published']).default('published'),
+    role: z.string().optional(),
+    tools: z.array(z.string()).default([]),
+    tags: z.array(z.string()).default([]),
+    links: z.array(link).default([]),
+    draft: z.boolean().default(false),
+  }),
+});
+
+/* ------------------------------------------------------------ research
+   Papers, posters, preprints and talks. Leave a link out until it exists:
+   the page shows "coming soon" in its place. */
+const research = defineCollection({
+  loader: glob({ pattern: '**/[^_]*.md', base: './src/content/research' }),
+  schema: z.object({
+    title: z.string(),
+    authors: z.array(z.string()),
+    venue: z.string(),
+    type: z.enum(['paper', 'poster', 'preprint', 'talk', 'thesis']),
+    year: z.number(),
+    status: z.string(),
+    summary: z.string(),
+    arxiv: z.url().optional(),
+    scholar: z.url().optional(),
+    doi: z.url().optional(),
+    pdf: z.url().optional(),
+    poster: z.url().optional(),
+    code: z.url().optional(),
+    bibtex: z.string().optional(),
+    tags: z.array(z.string()).default([]),
+    draft: z.boolean().default(false),
+  }),
+});
+
+/* -------------------------------------------------------- achievements
+   Competitions, hackathons, game jams and events: what happened, what you
+   achieved, what you learned, how it felt, and your verdict. */
+const achievements = defineCollection({
+  loader: glob({ pattern: '**/[^_]*.md', base: './src/content/achievements' }),
+  schema: z.object({
+    title: z.string(),
+    event: z.string(),
+    type: z.enum(['competition', 'hackathon', 'game-jam', 'event', 'workshop', 'volunteering', 'other']),
+    date: z.coerce.date(),
+    role: z.string().optional(),
+    team: z.string().optional(),
+    result: z.string(),
+    /** Your own words. Leave any of these out and the page says the reflection is coming. */
+    learned: z.string().optional(),
+    experience: z.string().optional(),
+    verdict: z.string().optional(),
+    team_members: z.array(z.string()).default([]),
+    tools: z.array(z.string()).default([]),
+    /** 1 to 5: how much you would recommend doing it again. */
+    rating: z.number().min(1).max(5).optional(),
+    links: z.array(link).default([]),
+    draft: z.boolean().default(false),
+  }),
+});
+
+export const collections = { art, uiux, research, achievements };
