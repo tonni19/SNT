@@ -10,7 +10,11 @@ import Icon from './Icon.astro';
 import Crt from './Crt.astro';
 import { site, artCategories } from '../data/site';
 
-const pieces = (await getCollection('art')).sort((a, b) => a.data.order - b.data.order);
+// featured pieces lead their channel, then the art portfolio's own order
+const pieces = (await getCollection('art', ({ data }) => !data.hidden)).sort((a, b) => Number(b.data.featured) - Number(a.data.featured) || a.data.order - b.data.order);
+const PER_CHANNEL = 12; // the rest are one click away on the art portfolio
+const rank: Record<string, number> = {};
+const rankOf = (cat: string) => (rank[cat] = (rank[cat] ?? -1) + 1);
 const channels = [
   { id: 'featured', title: 'Featured', path: '/' },
   ...artCategories,
@@ -46,9 +50,9 @@ const catTitle = Object.fromEntries(artCategories.map((c) => [c.id, c.title]));
           <div class="tv__osd" aria-live="polite"><span class="tv__osd-ch" id="artOsd">CH 01 · FEATURED</span><span class="tv__osd-live">● LIVE</span></div>
           <ul class="tv__grid" id="artGrid">
             {pieces.map((p) => (
-              <li class="tv__piece" data-cat={p.data.category} data-featured={p.data.featured ? '1' : '0'}>
+              <li class="tv__piece" data-cat={p.data.category} data-featured={p.data.featured ? '1' : '0'} data-rank={rankOf(p.data.category)}>
                 <a href={`${site.artPortfolio}${p.data.path}`} target="_blank" rel="noopener" aria-label={`${p.data.title}, ${catTitle[p.data.category]}. Opens on the art portfolio.`}>
-                  <Image src={p.data.image} alt="" widths={[220, 360, 480]} sizes="(max-width: 600px) 45vw, 220px" loading="lazy" />
+                  <Image src={`${site.artPortfolio}${p.data.image}`} width={p.data.width} height={p.data.height} alt="" widths={[220, 360, 480]} sizes="(max-width: 600px) 45vw, 220px" loading="lazy" />
                   <span class="tv__cap"><b>{p.data.title}</b><span>{catTitle[p.data.category]}</span><Icon name="arrow-up-right" /></span>
                 </a>
               </li>
@@ -56,7 +60,7 @@ const catTitle = Object.fromEntries(artCategories.map((c) => [c.id, c.title]));
           </ul>
           <div class="tv__foot">
             {artCategories.map((c) => (
-              <a class="tv__more" data-for={c.id} href={`${site.artPortfolio}${c.path}`} target="_blank" rel="noopener" hidden>All {c.title.toLowerCase()} on the art portfolio <Icon name="arrow-up-right" /></a>
+              <a class="tv__more" data-for={c.id} href={`${site.artPortfolio}${c.path}`} target="_blank" rel="noopener" hidden>{count(c.id) > PER_CHANNEL ? `+${count(c.id) - PER_CHANNEL} more: all ${count(c.id)} ${c.title.toLowerCase()} on the art portfolio` : `All ${c.title.toLowerCase()} on the art portfolio`} <Icon name="arrow-up-right" /></a>
             ))}
             <span class="tv__hint" data-for="featured">Six favourites. The other channels hold the rest.</span>
           </div>
@@ -76,16 +80,17 @@ const catTitle = Object.fromEntries(artCategories.map((c) => [c.id, c.title]));
     const osd = room.querySelector('#artOsd') as HTMLElement;
     const foot = [...room.querySelectorAll<HTMLElement>('[data-for]')];
     const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const PER_CHANNEL = 12;
     function tune(i: number) {
       const t = tabs[i]; if (!t) return;
       const ch = t.dataset.ch!;
       tabs.forEach((b) => b.setAttribute('aria-selected', String(b === t)));
       const apply = () => {
-        pieces.forEach((p) => { p.hidden = ch === 'featured' ? p.dataset.featured !== '1' : p.dataset.cat !== ch; });
+        pieces.forEach((p) => { p.hidden = ch === 'featured' ? p.dataset.featured !== '1' : (p.dataset.cat !== ch || +p.dataset.rank! >= PER_CHANNEL); });
         foot.forEach((f) => { f.hidden = f.dataset.for !== ch; });
         osd.textContent = `CH ${String(i + 1).padStart(2, '0')} · ${t.querySelector('.tv__name')!.textContent!.toUpperCase()}`;
       };
-      if (reduced) { apply(); return; }
+      if (reduced || document.documentElement.dataset.fx === 'off') { apply(); return; }
       screen.classList.remove('is-switching'); void screen.offsetWidth;
       screen.classList.add('is-switching');
       setTimeout(apply, 180);

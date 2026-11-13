@@ -6,6 +6,8 @@
 const $ = (s, r = document) => r.querySelector(s);
 const body = document.body;
 const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+// the effects switch: when 'off' the canvases are hidden (CSS) and the loops idle
+const fxOff = () => document.documentElement.dataset.fx === 'off';
 const rand = (a, b) => a + Math.random() * (b - a);
   /* ======================================================================
      ATMOSPHERE: dust motes drifting in the dark, a torch that follows you
@@ -52,9 +54,8 @@ const rand = (a, b) => a + Math.random() * (b - a);
     // the torch eases toward the cursor so it feels hand-held
     let tx = lx, ty = ly;
     addEventListener('pointermove', (e) => { if (e.pointerType !== 'touch') { tx = e.clientX; ty = e.clientY; } }, { passive: true });
-    if (reduced) { draw(0); return; }
     (function loop(t) {
-      if (!document.hidden) {
+      if (!document.hidden && !fxOff()) {
         lx += (tx - lx) * 0.06; ly += (ty - ly) * 0.06;
         torch.style.setProperty('--tx', lx.toFixed(1) + 'px');
         torch.style.setProperty('--ty', ly.toFixed(1) + 'px');
@@ -153,10 +154,9 @@ const rand = (a, b) => a + Math.random() * (b - a);
     size();
     addEventListener('resize', size);
     const start = () => {
-      if (reduced) { catX = W * 0.62; frame(0, true); return; }
       let last = 0, lastFlip = 0;
       (function loop(t) {
-        if (!document.hidden && t - last > 50) {                  // about 20 frames a second is plenty for rain
+        if (!document.hidden && !fxOff() && t - last > 50) {                  // about 20 frames a second is plenty for rain
           const dt = Math.min(100, t - last); last = t;
           catX += dt * 0.024 * (W < 700 ? 0.7 : 1);             // a slow, unbothered walk
           if (catX > W + 40) catX = -110 * catScale;

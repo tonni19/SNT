@@ -78,6 +78,10 @@ export const files = [
     desc: 'Ambiguity in AI memory permissions: which rules a preview cannot tell apart, which follow-up requests resolve them, and a pilot survey. With Nafis Fuad Shahid.' },
   { name: 'AppleDHD', ext: 'APP', kind: 'UI', label: 'Run', device: 'Next.js · Capacitor', subject: 'Product · UI', title: 'A hand-drawn personal planner', status: 'live · web, Android, iOS', url: 'https://appledhd.vercel.app/',
     desc: 'Calendar, tasks, goals, cycle, budget and notes over my own artwork. Everything stays on your device.' },
+  { name: 'Nestly', ext: 'APP', kind: 'UI', label: 'Run', device: 'Next.js · Supabase', subject: 'Platform · UX', title: 'Shared student housing, verified', status: 'live', url: 'https://nestly-core.vercel.app',
+    desc: 'UIUNest grown into a full platform for student and bachelor housing near Dhaka campuses: itemised rent, verified landlords, 8-point flatmate matching, mess bills, real-time chat and the Nestly Exchange marketplace. Built with SpicyFalcon619.' },
+  { name: 'Nestly_src', ext: 'WEB', kind: 'UI', label: 'Source', device: 'Next.js 16 · React 19', subject: 'Supabase · Realtime', title: 'Nestly, as code', status: 'collaborator', url: 'https://github.com/SpicyFalcon619/nestly-core',
+    desc: 'Server Actions, Supabase Postgres, Auth, Realtime and Storage, Zod validation, Leaflet maps and Chart.js analytics.' },
   { name: 'UIUNest', ext: 'WEB', kind: 'UI', label: 'Run', device: 'HTML · JS · Leaflet', subject: 'Platform · UX', title: 'Student housing for UIU', status: 'built', url: 'https://github.com/tonni19/UIUNest',
     desc: 'Verified housing, flatmate compatibility matching, an exchange marketplace, mess bills and an admin dashboard in one app.' },
   { name: 'Tortfolio_src', ext: 'WEB', kind: 'UI', label: 'Source', device: 'Next.js · Tailwind', subject: 'Web · Art', title: 'The art portfolio, as code', status: 'deployed', url: 'https://github.com/tonni19/tortfolio',
@@ -103,7 +107,7 @@ export const files = [
 /** oldest first */
 export const timeline = [
   { year: '2026.05', title: 'AppleDHD begins', tag: 'UI', text: 'A planner drawn by hand, built with Next.js and wrapped for Android and iOS.' },
-  { year: '2026.06', title: 'UIUNest', tag: 'UI', text: 'A housing and flatmate platform for UIU students, landlords and admins.' },
+  { year: '2026.06', title: 'UIUNest, then Nestly', tag: 'UI', text: 'A housing and flatmate platform for UIU students that grew into Nestly: verified landlords, flatmate matching and a marketplace, on Next.js and Supabase.' },
   { year: '2026.07', title: 'IUT ICT Fest game jam', tag: 'GAME', text: 'A Small Journey: a boy who stomps on ants wakes up as one. Made in a week with team Phat_Cat in Godot 4.' },
   { year: '2026.09', title: 'Tortfolio goes live', tag: 'ART', text: "A home for Tortilla's characters, comics and hand-drawn animation." },
   { year: '2026.11', title: 'Poster paper for ACM IUI 2027', tag: 'RESEARCH', text: 'What a memory preview cannot tell you: ambiguity in AI memory permissions.' },
@@ -152,6 +156,7 @@ export const uiuxShelves = [
 /** Shipped interfaces that already exist (shown in the lab while case studies are written). */
 export const shipped = [
   { title: 'AppleDHD', what: 'Hand-drawn personal planner · web, Android, iOS', url: 'https://appledhd.vercel.app/', repo: null },
-  { title: 'UIUNest', what: 'Student housing and flatmate platform', url: null, repo: 'https://github.com/tonni19/UIUNest' },
+  { title: 'Nestly', what: 'Student housing, verified: flatmate matching, mess bills, a second-hand marketplace', url: 'https://nestly-core.vercel.app', repo: 'https://github.com/SpicyFalcon619/nestly-core' },
+  { title: 'UIUNest', what: 'The first version of Nestly, for UIU students', url: null, repo: 'https://github.com/tonni19/UIUNest' },
   { title: 'Tortfolio', what: 'My art portfolio: comic reader, reel player, day/night themes', url: 'https://tortfolio-art.vercel.app', repo: 'https://github.com/tonni19/tortfolio' },
 ];

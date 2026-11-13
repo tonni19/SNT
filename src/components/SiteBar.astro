@@ -20,6 +20,10 @@ const idx = Math.max(0, sections.findIndex((s) => s.id === current));
         </a>
       ))}
     </nav>
+    <button class="fx-toggle" id="fxToggle" type="button" aria-pressed="true" title="Turn visual effects off or on">
+      <Icon name="zap" class="fx-on" /><Icon name="zap-off" class="fx-off" />
+      <span class="fx-toggle__label">Effects <b class="fx-on">on</b><b class="fx-off">off</b></span>
+    </button>
     <a class="btn btn--primary site-bar__cta" href="/#contact" data-go="contact">Get in touch <Icon name="arrow-right" /></a>
     <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="menu"><Icon name="menu" /> Menu</button>
     <ul class="menu" id="menu" hidden>
@@ -44,6 +48,20 @@ const idx = Math.max(0, sections.findIndex((s) => s.id === current));
   document.addEventListener('click', (e) => { if (!menu.hidden && !(e.target as Element).closest('#menu')) close(); });
   addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });
   menu.addEventListener('click', (e) => { if ((e.target as Element).closest('a')) close(); });
+
+  // effects switch
+  const fx = document.getElementById('fxToggle') as HTMLButtonElement;
+  const sync = () => {
+    const on = document.documentElement.dataset.fx !== 'off';
+    fx.setAttribute('aria-pressed', String(on));
+    fx.setAttribute('aria-label', on ? 'Visual effects are on. Turn them off' : 'Visual effects are off. Turn them on');
+  };
+  fx.addEventListener('click', () => {
+    const w = window as unknown as { mnemosFx: { set: (s: string) => void } };
+    w.mnemosFx.set(document.documentElement.dataset.fx === 'off' ? 'on' : 'off');
+  });
+  document.addEventListener('fxchange', sync);
+  sync();
 
   const knob = document.getElementById('knob') as HTMLElement;
   let raf = 0;

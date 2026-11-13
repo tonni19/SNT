@@ -1,5 +1,10 @@
 ---
+import { Image } from 'astro:assets';
 import Icon from './Icon.astro';
+import { site } from '../data/site';
+// avatars are linked from the art portfolio (Tortfolio), not copied into this repo
+const avatar = `${site.artPortfolio}/art/my-avatars/notjustpfp.webp`;
+const phoneAvatar = `${site.artPortfolio}/art/my-avatars/tortilla.webp`;
 ---
     <section class="room room--profile" id="profile" data-room="profile" aria-labelledby="profileTitle">
       <header class="room__head">
@@ -16,7 +21,7 @@ import Icon from './Icon.astro';
                   <div class="dossier">
                     <div class="dossier__id">
                       <div class="portrait">
-                        <img src="assets/art/avatar.webp" alt="Tonni's self-portrait avatar: a fanged girl holding a giant pencil" width="1080" height="1080">
+                        <Image src={avatar} alt="Tonni's self-portrait avatar: a fanged girl holding a giant pencil" width={1080} height={1080} widths={[240, 480]} sizes="240px" />
                         <span class="portrait__rec"><Icon name="circle" /> REC</span>
                       </div>
                       <p class="status-line">Status: <b id="profileStatus">AWAKE</b></p>
@@ -57,7 +62,7 @@ import Icon from './Icon.astro';
           <div class="phone__screen">
             <div class="phone__bar"><span id="phoneTime">1:44</span><span class="phone__icons"><Icon name="signal" /><Icon name="battery-full" /></span></div>
             <div class="phone__card">
-              <div class="phone__avatar" aria-hidden="true"><img src="assets/art/tortilla.webp" alt="" width="1080" height="1350"></div>
+              <div class="phone__avatar" aria-hidden="true"><Image src={phoneAvatar} alt="" width={1080} height={1350} widths={[60, 120]} sizes="54px" /></div>
               <p class="phone__name" id="phoneName">???</p>
             </div>
             <p class="phone__status">Status: <b id="phoneStatus">AWAKE</b></p>
