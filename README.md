@@ -1,4 +1,6 @@
-# MNEMOS-87
+# SNT · MNEMOS-87
+
+**Live: [tonni19.github.io/SNT](https://tonni19.github.io/SNT/)**
 
 The personal website of **Sadia Noman Tonni**: artist (as *Tortilla*), game asset creator, UI/UX designer and AI × HCI researcher.
 
@@ -37,7 +39,9 @@ npm run preview    # serve the built site
 npm run check      # type-check content and code
 ```
 
-Deploy `dist/` to any static host. On Vercel or Netlify, import the repo and the Astro preset is picked automatically.
+Every push to `main` builds the site and publishes it to GitHub Pages at [tonni19.github.io/SNT](https://tonni19.github.io/SNT/) (`.github/workflows/deploy.yml`). Locally the site also lives under `/SNT/`, e.g. `http://127.0.0.1:4321/SNT/`.
+
+The sub-path comes from `base: '/SNT'` in `astro.config.mjs`. Internal links go through `url()` in `src/lib/url.ts`, so if the repo is renamed, only `base` changes.
 
 ## Adding your work
 
