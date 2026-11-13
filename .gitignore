@@ -1,0 +1,9 @@
+# tool output and scratch folders
+.taste-skill/
+.playwright-cli/
+graphify-out/
+
+# OS and editor files
+.DS_Store
+Thumbs.db
+.vscode/
