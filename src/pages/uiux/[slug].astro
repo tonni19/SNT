@@ -1,4 +1,5 @@
 ---
+import { url } from '../../lib/url';
 /** One page per analysis, case study or recreation in src/content/uiux. */
 import { getCollection, render, type CollectionEntry } from 'astro:content';
 import Base from '../../layouts/Base.astro';
@@ -22,7 +23,7 @@ const TYPE = { analysis: 'Product analysis', 'case-study': 'Case study', recreat
         <h1 class="room__title" id="docTitle">{d.title}</h1>
         <p class="room__lead">{d.summary}</p>
       </header>
-      <Crt channel="design lab" back={{ href: '/#uiux', label: 'UI/UX lab' }}>
+      <Crt channel="design lab" back={{ href: url('/#uiux'), label: 'UI/UX lab' }}>
         <div class="scene scene--doc">
           <ul class="doc-meta">
             <li>{TYPE[d.type]}</li>

@@ -1,4 +1,5 @@
 ---
+import { url } from '../lib/url';
 import Icon from './Icon.astro';
 import { site, links } from '../data/site';
 const resolve = (u: string) => (u === '@art' ? site.artPortfolio : u.replace('@email', site.email));
@@ -8,12 +9,12 @@ const resolve = (u: string) => (u === '@art' ? site.artPortfolio : u.replace('@e
   <div class="site-foot__row">
     <ul class="site-foot__links">
       {links.map((l) => {
-        const url = resolve(l.url);
-        const ext = /^https?:/.test(url);
-        return <li><a href={url} target={ext ? '_blank' : undefined} rel={ext ? 'noopener' : undefined}><Icon name={l.icon} />{l.nice}</a></li>;
+        const href = resolve(l.url);
+        const ext = /^https?:/.test(href);
+        return <li><a href={href} target={ext ? '_blank' : undefined} rel={ext ? 'noopener' : undefined}><Icon name={l.icon} />{l.nice}</a></li>;
       })}
     </ul>
     <p class="site-foot__small">© 2026 {site.name}. It's always 1:44 am in here.</p>
-    <a class="btn btn--quiet" href="/#home" data-go="home">Back to the top <Icon name="arrow-up" /></a>
+    <a class="btn btn--quiet" href={url('/#home')} data-go="home">Back to the top <Icon name="arrow-up" /></a>
   </div>
 </footer>

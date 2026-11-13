@@ -1,4 +1,5 @@
 ---
+import { url } from '../lib/url';
 /**
  * ACHIEVEMENTS & EVENTS: an arcade-style high-score board. Each row opens to
  * what I learned, what it was like, and my honest verdict. Entries come from
@@ -50,7 +51,7 @@ const TYPE: Record<string, string> = { competition: 'Competition', hackathon: 'H
                       </div>
                     ))}
                     <p class="board__more">
-                      <a href={`/achievements/${a.id}/`}>The full story <Icon name="arrow-right" /></a>
+                      <a href={url(`/achievements/${a.id}/`)}>The full story <Icon name="arrow-right" /></a>
                       {a.data.links[0] && <a href={a.data.links[0].url} target="_blank" rel="noopener">{a.data.links[0].label} <Icon name="arrow-up-right" /></a>}
                     </p>
                   </div>
