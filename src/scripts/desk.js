@@ -10,6 +10,8 @@
   const $$ = (s, r = document) => [...r.querySelectorAll(s)];
   const body = document.body;
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // visual effects switch (top bar / boot screen): 'off' stills everything that moves or flashes
+  const fxOff = () => document.documentElement.dataset.fx === 'off';
   const rand = (a, b) => a + Math.random() * (b - a);
   const pick = (a) => a[Math.floor(Math.random() * a.length)];
   const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
@@ -128,14 +130,14 @@
     cctx.putImageData(img, 0, 0);
     onScreen.forEach((c) => statics.get(c).drawImage(cvs, 0, 0));
   }
-  if (!reduced) {
+  {
     let f = 0;
-    (function loop() { if (++f % 3 === 0) drawStatic(); requestAnimationFrame(loop); })();
+    (function loop() { if (!fxOff() && ++f % 3 === 0) drawStatic(); requestAnimationFrame(loop); })();
   }
 
   const curRoom = () => ROOMS[cur] || ROOMS[0];
   function flashSub(text, ms = 120, i = cur) {
-    if (reduced) return;
+    if (reduced || fxOff()) return;
     const r = ROOMS[i] || ROOMS[0];
     if (sub.parentNode !== r.ui) r.ui.appendChild(sub); // the message appears on the screen you're looking at
     sub.textContent = text;
@@ -143,6 +145,7 @@
     setTimeout(() => sub.classList.remove('is-on'), ms);
   }
   function glitch(hard = body.dataset.mood === 'dread') {
+    if (fxOff()) return;
     const ui = curRoom().ui;
     ui.classList.remove('is-glitch', 'is-hard'); void ui.offsetWidth;
     ui.classList.add('is-glitch'); ui.classList.toggle('is-hard', hard);
@@ -152,7 +155,7 @@
     const mood = body.dataset.mood;
     const [a, b] = mood === 'dread' ? [3500, 8000] : mood === 'numb' ? [25000, 45000] : [18000, 36000];
     setTimeout(() => {
-      if (!busy && !document.hidden && !reduced) {
+      if (!busy && !document.hidden && !reduced && !fxOff()) {
         glitch();
         if (mood === 'dread' && Math.random() < 0.35) flashSub(pick(['STILL HERE?', 'LOOK BEHIND', '1:44', "DON'T BLINK"]), 110);
       }
@@ -236,7 +239,7 @@
 
   // a CRT "tunes in" when you reach it: full channel change the first time, a puff of static after that
   function tuneIn(i) {
-    if (reduced) return;
+    if (reduced || fxOff()) return;
     const sc = ROOMS[i].screen;
     const full = !entered.has(i);
     entered.add(i);
@@ -433,7 +436,7 @@
     if (!d || pet.parentNode === d) return;
     pet.style.left = ''; pet.style.top = '';
     d.appendChild(pet);
-    if (hop && !reduced && pet.animate) {
+    if (hop && !reduced && !fxOff() && pet.animate) {
       pet.animate([{ transform: 'translateY(-22px) scale(.6)', opacity: 0 }, { transform: 'none', opacity: 1 }],
         { duration: 420, easing: 'steps(6)' });
     }
@@ -515,7 +518,7 @@
     local.set(DESK_KEY, JSON.stringify(o));
   }
   function nudgeDesk(room) {
-    if (reduced) return;
+    if (reduced || fxOff()) return;
     movers.filter((el) => room == null || roomOf(el) === room).forEach((el, k) => {
       setTimeout(() => {
         el.style.rotate = rand(-1.4, 1.4).toFixed(2) + 'deg';
@@ -903,10 +906,12 @@
     let li = 0;
     (function next() {
       if (!booting) return;
-      if (li >= BOOT.length) { $('#bootPrompt').classList.add('is-on'); setTimeout(enter, 450); return; } // carries on by itself
+      if (li >= BOOT.length) { $('#bootPrompt').classList.add('is-on'); setTimeout(enter, 2200); return; } // carries on by itself, after time to pick "effects off"
       log.innerHTML += BOOT[li++] + '\n';
       setTimeout(next, li > 5 ? 200 : rand(70, 130));
     })();
+    const calm = document.getElementById('bootCalm');
+    if (calm) calm.addEventListener('click', () => window.mnemosFx && window.mnemosFx.set('off'));
     addEventListener('keydown', enter, { once: true });
     bootEl.addEventListener('click', enter, { once: true });
   }

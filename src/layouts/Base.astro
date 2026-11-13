@@ -36,6 +36,23 @@ const {
   <meta property="og:type" content="website" />
   <meta name="theme-color" content="#000000" />
   <meta name="generator" content={Astro.generator} />
+  <script is:inline>
+    // Effects on/off, decided before the first paint so nothing flashes. Saved per visitor;
+    // the default follows the system's reduced-motion setting.
+    (function () {
+      var v = null;
+      try { v = localStorage.getItem('mnemos-fx'); } catch (e) {}
+      var off = v ? v === 'off' : matchMedia('(prefers-reduced-motion: reduce)').matches;
+      document.documentElement.dataset.fx = off ? 'off' : 'on';
+      window.mnemosFx = {
+        set: function (state) {
+          document.documentElement.dataset.fx = state;
+          try { localStorage.setItem('mnemos-fx', state); } catch (e) {}
+          document.dispatchEvent(new CustomEvent('fxchange', { detail: state }));
+        }
+      };
+    })();
+  </script>
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
