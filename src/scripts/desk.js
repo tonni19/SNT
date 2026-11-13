@@ -1,11 +1,11 @@
 /* ==========================================================================
-   MNEMOS-87 · behaviour
-   Content lives in js/data.js; this file only renders and animates it.
+   MNEMOS-87 · the desk (home page behaviour)
+   Data arrives as JSON from src/pages/index.astro (built from src/data/site.ts).
    ========================================================================== */
 (() => {
   'use strict';
 
-  const S = window.SITE;
+  const S = JSON.parse(document.getElementById('site-data').textContent);
   const $ = (s, r = document) => r.querySelector(s);
   const $$ = (s, r = document) => [...r.querySelectorAll(s)];
   const body = document.body;
@@ -15,7 +15,7 @@
   const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
   const resolveUrl = (u) => (u === '@art' ? S.artPortfolio : String(u || '').replace('@email', S.email));
   const isExternal = (u) => /^https?:/.test(u);
-  // Lucide icon from the sprite in index.html
+  // Lucide icon from the sprite in Icons.astro
   const icon = (name, cls = '') => `<svg class="i${cls ? ' ' + cls : ''}" aria-hidden="true"><use href="#i-${name}"/></svg>`;
   const redact = (v, w = 8) => (v == null ? `<span class="redact" style="width:${w}ch" title="redacted"></span>` : esc(v));
   const session = {
@@ -23,18 +23,7 @@
     set(k, v) { try { sessionStorage.setItem(k, v); } catch { /* private mode */ } }
   };
 
-  const SECTIONS = [
-    { id: 'home',     lcd: 'HOME', title: 'Home',         nav: 'Home',     label: 'Run',     status: 'AWAKE',
-      icon: 'house' },
-    { id: 'work',     lcd: 'WORK', title: 'Work & Tools', nav: 'Work',     label: 'Files',   status: 'WORKING',
-      icon: 'folder' },
-    { id: 'profile',  lcd: 'PRFL', title: 'Profile',      nav: 'Profile',  label: 'Profile', status: 'OBSERVED',
-      icon: 'user' },
-    { id: 'timeline', lcd: 'LOGS', title: 'Timeline',     nav: 'Timeline', label: 'Tapes',   status: 'REMEMBERING',
-      icon: 'cassette-tape' },
-    { id: 'contact',  lcd: 'CALL', title: 'Contact',      nav: 'Contact',  label: 'Com',     status: 'LISTENING',
-      icon: 'phone' }
-  ];
+  const SECTIONS = S.sections;
 
   /* ---------- elements ---------- */
   const stage = $('#stage');
@@ -180,27 +169,9 @@
   const entered = new Set();
   const here = () => (jump ? jump.i : cur);
 
-  // room buttons along the top bar
-  $('#rail').innerHTML = SECTIONS.map((s, i) => `
-    <button data-go="${s.id}" aria-label="${esc(s.title)}" title="${i + 1} · ${esc(s.title)}">
-      ${icon(s.icon)}<span class="rail__label">${esc(s.nav)}</span>
-    </button>`).join('');
-  // the rainbow "signal" under the top bar fills as you scroll
-  const knob = $('#knob');
-  function updateProgress() {
-    const max = document.documentElement.scrollHeight - innerHeight;
-    knob.style.setProperty('--p', max > 0 ? Math.min(1, scrollY / max).toFixed(4) : 0);
-  }
-  // menu
+  // the top bar (links, menu, progress line) is rendered and wired by SiteBar.astro
   const menu = $('#menu'), menuBtn = $('#menuBtn');
-  menu.innerHTML = SECTIONS.map((s) => `<li><button data-go="${s.id}"><span>${icon(s.icon)}${esc(s.title)}</span><span>${esc(s.label)}</span></button></li>`).join('');
   const closeMenu = () => { menu.hidden = true; menuBtn.setAttribute('aria-expanded', 'false'); };
-  menuBtn.addEventListener('click', (e) => {
-    e.stopPropagation();
-    const open = menu.hidden;
-    menu.hidden = !open; menuBtn.setAttribute('aria-expanded', String(open));
-    blip(640, 0.04);
-  });
   // lcd track
   $('#lcdTrack').innerHTML = SECTIONS.map(() => '<b></b>').join('');
 
@@ -257,7 +228,6 @@
     if (!scrollRaf) scrollRaf = requestAnimationFrame(() => {
       scrollRaf = 0;
       queueEyes();
-      updateProgress();
       if (!jump) { const i = detect(); if (i !== cur) activate(i); }
     });
     clearTimeout(settleTimer);
@@ -283,8 +253,8 @@
     const s = SECTIONS[i];
     cur = i;
     $('#ep').textContent = 'EP.' + (i + 1);
-    $$('#rail button').forEach((b, k) => { b.classList.toggle('is-current', k === i); b.toggleAttribute('aria-current', k === i); });
-    $$('#menu button').forEach((b, k) => b.classList.toggle('is-current', k === i));
+    $$('#rail a').forEach((b, k) => { b.classList.toggle('is-current', k === i); if (k === i) b.setAttribute('aria-current', 'true'); else b.removeAttribute('aria-current'); });
+    $$('#menu a').forEach((b, k) => b.classList.toggle('is-current', k === i));
     $('#lcdBig').textContent = s.lcd;
     $$('#lcdTrack b').forEach((b, k) => b.classList.toggle('on', k <= i));
     renderMemo(s.id);
@@ -370,7 +340,7 @@
       return;
     }
     if (k) { e.preventDefault(); pressVisual(k); act(k); }
-    else if (/^[1-5]$/.test(e.key)) go(+e.key - 1);
+    else if (/^[1-9]$/.test(e.key) && +e.key <= SECTIONS.length) go(+e.key - 1);
     else if (e.key === 'Escape') closeMenu();
   });
 
@@ -470,31 +440,9 @@
   }
 
   // links to the separate art site
-  ['#artFolder', '#stickyArt', '#barArt', '#heroArt', '#artMore', '#footArt'].forEach((s) => { const a = $(s); if (a) a.href = S.artPortfolio; });
-
-  // ART WALL: real pieces from the portfolio (data.js → art)
-  $('#artWall').innerHTML = (S.art || []).map((a) => {
-    const media = /\.(mp4|webm)$/i.test(a.src)
-      ? `<video src="${esc(a.src)}" poster="${esc(a.poster || '')}" muted loop playsinline autoplay preload="none" aria-label="${esc(a.title)}, ${esc(a.kind)}"></video>`
-      : `<img src="${esc(a.src)}" alt="${esc(a.title)}, ${esc(a.kind.toLowerCase())} by Tortilla" loading="lazy" decoding="async">`;
-    return `<li class="art__item${a.size ? ' art__item--' + a.size : ''} reveal">
-      <a href="${esc(S.artPortfolio)}" target="_blank" rel="noopener">${media}<span class="art__cap">${esc(a.title)} <span>· ${esc(a.kind)}</span></span></a>
-    </li>`;
-  }).join('');
-  if (reduced) $$('#artWall video').forEach((v) => { v.removeAttribute('autoplay'); v.pause(); });
-
-  // footer links
-  const NICE = { EMAIL: 'Email', 'ART PORTFOLIO': 'Art portfolio', GITHUB: 'GitHub', APPLEDHD: 'AppleDHD' };
-  const NICE_ICON = { EMAIL: 'mail', 'ART PORTFOLIO': 'palette', GITHUB: 'github', APPLEDHD: 'external-link' };
-  $('#footLinks').innerHTML = S.links.map((l) => {
-    const u = resolveUrl(l.url);
-    return `<li><a href="${esc(u)}" ${isExternal(u) ? 'target="_blank" rel="noopener"' : ''}>${icon(NICE_ICON[l.label] || 'arrow-up-right')}${esc(NICE[l.label] || l.label)}</a></li>`;
-  }).join('');
-
   // entrances: headings, then their text, then pictures, as each section arrives
   document.documentElement.classList.add('js');
-  $$('.room__head, .art__head').forEach((h) => [...h.children].forEach((c, k) => { c.classList.add('reveal'); c.style.setProperty('--rd', (k * 0.08) + 's'); }));
-  $$('.art__item').forEach((el, k) => el.style.setProperty('--rd', ((k % 6) * 0.06) + 's'));
+  $$('.room__head').forEach((h) => [...h.children].forEach((c, k) => { c.classList.add('reveal'); c.style.setProperty('--rd', (k * 0.08) + 's'); }));
   if ('IntersectionObserver' in window && !reduced) {
     const ro = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('is-in'); ro.unobserve(e.target); } }), { rootMargin: '0px 0px -8% 0px' });
     $$('.reveal').forEach((el) => ro.observe(el));
@@ -704,7 +652,6 @@
     h1.innerHTML = `<span>${esc(words.join(' '))}</span>${last ? ` <span>${esc(last)}</span>` : ''}`;
     h1.dataset.text = words.join(' ') + (last ? '\n' + last : '');
   } else { h1.innerHTML = redact(null, 8); h1.dataset.text = ''; }
-  if (S.name) $('#footName').textContent = S.name;
 
   const dialog = $('#dialog');
   let dIdx = 0, dialogDone = false, homeVisits = 0;
@@ -762,7 +709,10 @@
     const url = f.url ? resolveUrl(f.url) : null;
     let action;
     if (f.locked) action = '<label>Password <input id="pw" maxlength="6" autocomplete="off" spellcheck="false"></label><span id="pwOut" aria-live="polite"></span>';
-    else if (url) action = `<a href="${esc(url)}" ${isExternal(url) ? 'target="_blank" rel="noopener"' : ''}>[ OPEN ]</a><span class="hint">${icon('corner-down-left')} also works</span>`;
+    else if (url) {
+      const attrs = url.startsWith('#') ? `data-go="${esc(url.slice(1))}"` : isExternal(url) ? 'target="_blank" rel="noopener"' : '';
+      action = `<a href="${esc(url)}" ${attrs}>[ OPEN ]</a><span class="hint">${icon('corner-down-left')} also works</span>`;
+    }
     else action = '<span style="opacity:.6">[ case file coming soon ]</span>';
     detailEl.innerHTML = `
       <dt>Device</dt><dd>${esc(f.device)}</dd>
@@ -793,7 +743,9 @@
     if (f.locked) { $('#pw')?.focus({ preventScroll: true }); return; }
     if (f.url) {
       const u = resolveUrl(f.url);
-      if (isExternal(u)) window.open(u, '_blank', 'noopener'); else location.href = u;
+      if (u.startsWith('#')) go(u.slice(1));
+      else if (isExternal(u)) window.open(u, '_blank', 'noopener');
+      else location.href = u;
     } else { glitch(); flashSub('NOT YET', 140); }
   }
   tabsEl.addEventListener('click', (e) => {

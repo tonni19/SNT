@@ -1,0 +1,107 @@
+---
+/**
+ * ART: a TV with a channel tuner. Each channel is one category of the art
+ * portfolio; every thumbnail opens that exact artwork on the art site, and each
+ * channel links once to its category page. Pieces come from src/content/art.json.
+ */
+import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
+import Icon from './Icon.astro';
+import Crt from './Crt.astro';
+import { site, artCategories } from '../data/site';
+
+const pieces = (await getCollection('art')).sort((a, b) => a.data.order - b.data.order);
+const channels = [
+  { id: 'featured', title: 'Featured', path: '/' },
+  ...artCategories,
+];
+const count = (id: string) => (id === 'featured' ? pieces.filter((p) => p.data.featured).length : pieces.filter((p) => p.data.category === id).length);
+const catTitle = Object.fromEntries(artCategories.map((c) => [c.id, c.title]));
+---
+<section class="room room--wide room--art" id="art" data-room="art" aria-labelledby="artTitle">
+  <header class="room__head">
+    <h2 class="room__title" id="artTitle">Art</h2>
+    <p class="room__lead">I draw as Tortilla: portraits, game characters, comics, animation and commissions. Change the channel, then open any piece to see it on its own page.</p>
+  </header>
+
+  <Crt channel="art channels" class="crt--art">
+    <div class="scene scene--art" id="scene-art">
+      <div class="tv">
+        <nav class="tv__tuner" aria-label="Art channels">
+          <p class="tv__tuner-title"><Icon name="tv" /> CHANNEL</p>
+          <ul role="tablist">
+            {channels.map((c, i) => (
+              <li>
+                <button role="tab" class="tv__ch" data-ch={c.id} aria-selected={i === 0 ? 'true' : 'false'}>
+                  <span class="tv__num">{String(i + 1).padStart(2, '0')}</span>
+                  <span class="tv__name">{c.title}</span>
+                  <span class="tv__count">{count(c.id)}</span>
+                </button>
+              </li>
+            ))}
+          </ul>
+        </nav>
+
+        <div class="tv__picture">
+          <div class="tv__osd" aria-live="polite"><span class="tv__osd-ch" id="artOsd">CH 01 · FEATURED</span><span class="tv__osd-live">● LIVE</span></div>
+          <ul class="tv__grid" id="artGrid">
+            {pieces.map((p) => (
+              <li class="tv__piece" data-cat={p.data.category} data-featured={p.data.featured ? '1' : '0'}>
+                <a href={`${site.artPortfolio}${p.data.path}`} target="_blank" rel="noopener" aria-label={`${p.data.title}, ${catTitle[p.data.category]}. Opens on the art portfolio.`}>
+                  <Image src={p.data.image} alt="" widths={[220, 360, 480]} sizes="(max-width: 600px) 45vw, 220px" loading="lazy" />
+                  <span class="tv__cap"><b>{p.data.title}</b><span>{catTitle[p.data.category]}</span><Icon name="arrow-up-right" /></span>
+                </a>
+              </li>
+            ))}
+          </ul>
+          <div class="tv__foot">
+            {artCategories.map((c) => (
+              <a class="tv__more" data-for={c.id} href={`${site.artPortfolio}${c.path}`} target="_blank" rel="noopener" hidden>All {c.title.toLowerCase()} on the art portfolio <Icon name="arrow-up-right" /></a>
+            ))}
+            <span class="tv__hint" data-for="featured">Six favourites. The other channels hold the rest.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </Crt>
+</section>
+
+<script>
+  // channel tuner: filter the pieces, flash static on the screen like a real channel change
+  const room = document.getElementById('art');
+  if (room) {
+    const screen = room.querySelector('.crt__screen') as HTMLElement;
+    const tabs = [...room.querySelectorAll<HTMLButtonElement>('.tv__ch')];
+    const pieces = [...room.querySelectorAll<HTMLElement>('.tv__piece')];
+    const osd = room.querySelector('#artOsd') as HTMLElement;
+    const foot = [...room.querySelectorAll<HTMLElement>('[data-for]')];
+    const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    function tune(i: number) {
+      const t = tabs[i]; if (!t) return;
+      const ch = t.dataset.ch!;
+      tabs.forEach((b) => b.setAttribute('aria-selected', String(b === t)));
+      const apply = () => {
+        pieces.forEach((p) => { p.hidden = ch === 'featured' ? p.dataset.featured !== '1' : p.dataset.cat !== ch; });
+        foot.forEach((f) => { f.hidden = f.dataset.for !== ch; });
+        osd.textContent = `CH ${String(i + 1).padStart(2, '0')} · ${t.querySelector('.tv__name')!.textContent!.toUpperCase()}`;
+      };
+      if (reduced) { apply(); return; }
+      screen.classList.remove('is-switching'); void screen.offsetWidth;
+      screen.classList.add('is-switching');
+      setTimeout(apply, 180);
+      setTimeout(() => screen.classList.remove('is-switching'), 440);
+    }
+    tabs.forEach((t, i) => t.addEventListener('click', () => tune(i)));
+    // without script every piece shows; with it, start on the Featured channel
+    pieces.forEach((p) => { p.hidden = p.dataset.featured !== '1'; });
+    // arrow keys move between channels when the tuner has focus
+    room.querySelector('.tv__tuner')!.addEventListener('keydown', (e) => {
+      const ke = e as KeyboardEvent;
+      if (ke.key !== 'ArrowDown' && ke.key !== 'ArrowUp') return;
+      ke.preventDefault(); ke.stopPropagation();
+      const cur = tabs.findIndex((b) => b.getAttribute('aria-selected') === 'true');
+      const next = (cur + (ke.key === 'ArrowDown' ? 1 : -1) + tabs.length) % tabs.length;
+      tune(next); tabs[next].focus();
+    });
+  }
+</script>

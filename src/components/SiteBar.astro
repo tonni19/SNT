@@ -1,0 +1,57 @@
+---
+/**
+ * The sticky top bar: EP counter, room links, the one action, and a menu on phones.
+ * Links point at "/#room" so they also work from the detail pages; on the home
+ * page src/scripts/desk.js turns them into smooth scrolls.
+ */
+import Icon from './Icon.astro';
+import { sections } from '../data/site';
+interface Props { current?: string; }
+const { current } = Astro.props;
+const idx = Math.max(0, sections.findIndex((s) => s.id === current));
+---
+<header class="site-bar" id="siteBar">
+  <div class="site-bar__inner">
+    <a class="site-bar__brand" href="/#home" data-go="home"><span class="ep" id="ep" aria-live="polite" data-ui>EP.{idx + 1}</span><span>Tonni</span></a>
+    <nav class="rail" id="rail" aria-label="Sections">
+      {sections.map((s, i) => (
+        <a href={`/#${s.id}`} data-go={s.id} title={`${i + 1} · ${s.title}`} class:list={{ 'is-current': s.id === current }} aria-current={s.id === current ? 'true' : undefined}>
+          <Icon name={s.icon} /><span class="rail__label">{s.nav}</span>
+        </a>
+      ))}
+    </nav>
+    <a class="btn btn--primary site-bar__cta" href="/#contact" data-go="contact">Get in touch <Icon name="arrow-right" /></a>
+    <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="menu"><Icon name="menu" /> Menu</button>
+    <ul class="menu" id="menu" hidden>
+      {sections.map((s) => (
+        <li><a href={`/#${s.id}`} data-go={s.id} class:list={{ 'is-current': s.id === current }}><span><Icon name={s.icon} />{s.title}</span><span>{s.label}</span></a></li>
+      ))}
+    </ul>
+  </div>
+  <div class="signal" id="signal" aria-hidden="true"><i id="knob"></i></div>
+</header>
+
+<script>
+  // menu (phones) + the rainbow scroll-progress line. Shared by every page.
+  const menu = document.getElementById('menu') as HTMLElement;
+  const btn = document.getElementById('menuBtn') as HTMLButtonElement;
+  const close = () => { menu.hidden = true; btn.setAttribute('aria-expanded', 'false'); };
+  btn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const open = menu.hidden;
+    menu.hidden = !open; btn.setAttribute('aria-expanded', String(open));
+  });
+  document.addEventListener('click', (e) => { if (!menu.hidden && !(e.target as Element).closest('#menu')) close(); });
+  addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });
+  menu.addEventListener('click', (e) => { if ((e.target as Element).closest('a')) close(); });
+
+  const knob = document.getElementById('knob') as HTMLElement;
+  let raf = 0;
+  const progress = () => {
+    raf = 0;
+    const max = document.documentElement.scrollHeight - innerHeight;
+    knob.style.setProperty('--p', max > 0 ? Math.min(1, scrollY / max).toFixed(4) : '0');
+  };
+  addEventListener('scroll', () => { if (!raf) raf = requestAnimationFrame(progress); }, { passive: true });
+  progress();
+</script>

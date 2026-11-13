@@ -1,0 +1,51 @@
+---
+import Icon from './Icon.astro';
+---
+    <section class="room room--timeline room--flip" id="timeline" data-room="timeline" aria-labelledby="timelineTitle">
+      <header class="room__head">
+        <h2 class="room__title" id="timelineTitle">Timeline</h2>
+        <p class="room__lead">What I've made so far, one tape per milestone. The last one isn't recorded yet.</p>
+      </header>
+
+      <div class="crt" data-ui>
+        <div class="crt__bezel">
+          <div class="crt__screen">
+            <div class="screen__ui">
+              <div class="viewport">
+                <div class="scene scene--timeline" id="scene-timeline">
+                  <div class="vhs-hud" aria-hidden="true">
+                    <span class="vhs-hud__play">PLAY <Icon name="play" /></span>
+                    <span class="vhs-hud__sp">SP</span>
+                    <span class="vhs-hud__tc" id="timecode">00:00:00</span>
+                  </div>
+                  <h3 class="pixel-h tl-head">CASE LOG <small>/ tapes recovered: <span id="tapeCount">0</span></small></h3>
+                  <ol class="tapes" id="tapes"></ol>
+                </div>
+              </div>
+            </div>
+            <canvas class="static" width="160" height="100" aria-hidden="true"></canvas>
+            <div class="scanlines" aria-hidden="true"></div>
+            <div class="glass" aria-hidden="true"></div>
+          </div>
+          <div class="crt__chin">
+            <button class="chin-arrow" data-nav="prev" aria-label="Previous section"><Icon name="chevron-left" /></button>
+            <span class="brand">MNEMOS-87 <b>· tapes</b></span>
+            <i class="power__led" aria-hidden="true"></i>
+            <button class="chin-arrow" data-nav="next" aria-label="Next section"><Icon name="chevron-right" /></button>
+          </div>
+        </div>
+      </div>
+
+      <div class="desk">
+        <!-- MEMO PAD -->
+        <div class="memo" data-ui>
+          <div class="memo__rings" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+          <div class="memo__page">
+            <p class="memo__title">MEMO</p>
+            <ul class="memo__list" id="memoList"></ul>
+            <svg class="memo__doodle" viewBox="0 0 60 40" aria-hidden="true"><path d="M8 30c0-14 10-22 22-22s22 8 22 22c-6 4-38 4-44 0z" fill="none" stroke="#2a1630" stroke-width="2"/><circle cx="22" cy="22" r="3.2" fill="none" stroke="#2a1630" stroke-width="2"/><circle cx="38" cy="22" r="3.2" fill="none" stroke="#2a1630" stroke-width="2"/><circle class="memo__doodle-p" cx="22" cy="22" r="1.2" fill="#2a1630"/><circle class="memo__doodle-p" cx="38" cy="22" r="1.2" fill="#2a1630"/><path d="M26 30q4 2 8 0" fill="none" stroke="#2a1630" stroke-width="1.6"/></svg>
+            <button class="memo__next" data-nav="next">NEXT <span><Icon name="arrow-right" /></span></button>
+          </div>
+        </div>
+      </div>
+    </section>

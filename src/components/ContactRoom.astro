@@ -1,0 +1,85 @@
+---
+import Icon from './Icon.astro';
+---
+    <section class="room room--contact" id="contact" data-room="contact" aria-labelledby="contactTitle">
+      <header class="room__head">
+        <h2 class="room__title" id="contactTitle">Contact</h2>
+        <p class="room__lead">Write about a project, a commission, research, or just to say hello. Leave a message after the tone.</p>
+      </header>
+
+      <div class="crt" data-ui>
+        <div class="crt__bezel">
+          <div class="crt__screen">
+            <div class="screen__ui">
+              <div class="viewport">
+                <div class="scene scene--contact" id="scene-contact">
+                  <div class="machine" aria-hidden="true">
+                    <div class="machine__top">
+                      <span class="machine__led"></span>
+                      <span class="machine__count">1</span>
+                      <span class="machine__label">new message</span>
+                    </div>
+                    <div class="machine__tape">
+                      <div class="reel"><i></i></div>
+                      <div class="machine__ribbon"></div>
+                      <div class="reel"><i></i></div>
+                    </div>
+                    <p class="machine__brand">MNEMOS PHONE-MATE</p>
+                  </div>
+                  <div class="contact">
+                    <h3 class="pixel-h">LEAVE A MESSAGE <small>after the tone</small></h3>
+                    <form class="msg-form" id="msgForm" autocomplete="on">
+                      <label>From<input name="from" required placeholder="your name"></label>
+                      <label>Return&nbsp;address<input name="email" type="email" required placeholder="you@somewhere"></label>
+                      <label>Subject<input name="subject" placeholder="a project, a question, a hello"></label>
+                      <label class="msg-form__body">Message<textarea name="body" rows="4" required placeholder="speak clearly…"></textarea></label>
+                      <div class="msg-form__row">
+                        <button class="btn95 btn95--rec" type="submit"><Icon name="circle" /> RECORD &amp; SEND</button>
+                        <span class="msg-form__out" id="msgOut" role="status"></span>
+                      </div>
+                    </form>
+                    <ul class="channels" id="channels"></ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <canvas class="static" width="160" height="100" aria-hidden="true"></canvas>
+            <div class="scanlines" aria-hidden="true"></div>
+            <div class="glass" aria-hidden="true"></div>
+          </div>
+          <div class="crt__chin">
+            <button class="chin-arrow" data-nav="prev" aria-label="Previous section"><Icon name="chevron-left" /></button>
+            <span class="brand">MNEMOS-87 <b>· answering machine</b></span>
+            <i class="power__led" aria-hidden="true"></i>
+            <button class="chin-arrow" data-nav="next" aria-label="Back to the first room"><Icon name="chevron-right" /></button>
+          </div>
+        </div>
+      </div>
+
+      <div class="desk">
+        <!-- STICKY NOTE: date -->
+        <div class="sticky sticky--teal" aria-label="Today's date">
+          <span class="sticky__date" id="stickyDate">11/12</span>
+        </div>
+        <!-- VIRTUAL PET (it follows you from room to room) -->
+        <div class="pet" id="pet" data-ui>
+          <div class="pet__shell">
+            <div class="pet__screen">
+              <svg class="pet__mon" id="petMon" viewBox="0 0 16 14" shape-rendering="crispEdges" aria-hidden="true">
+                <path d="M5 1h6v1h2v1h1v8h-1v1h-1v1h-1v-1h-1v1H8v-1H7v1H5v-1H4v1H3v-1H2V3h1V2h2z" fill="currentColor"/>
+                <rect class="pet__eye" x="5" y="5" width="2" height="2" fill="#c9d6b4"/>
+                <rect class="pet__eye" x="9" y="5" width="2" height="2" fill="#c9d6b4"/>
+                <rect class="pet__mouth" x="7" y="8" width="2" height="1" fill="#c9d6b4"/>
+              </svg>
+              <span class="pet__heart" id="petHeart" aria-hidden="true"><Icon name="heart" /></span>
+            </div>
+            <span class="pet__bubble" id="petBubble" role="status">HI!!</span>
+            <div class="pet__btns">
+              <button data-pet="feed" aria-label="Feed the pet"></button>
+              <button data-pet="talk" aria-label="Talk to the pet"></button>
+              <button data-pet="light" aria-label="Toggle the pet's light"></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>

@@ -1,0 +1,61 @@
+---
+import Icon from './Icon.astro';
+---
+    <section class="room room--work room--flip" id="work" data-room="work" aria-labelledby="workTitle">
+      <header class="room__head">
+        <h2 class="room__title" id="workTitle">Work &amp; tools</h2>
+        <p class="room__lead">Projects, research and the tools I build with. Pick a file on the screen to read about it, then open it.</p>
+      </header>
+
+      <div class="crt" data-ui>
+        <div class="crt__bezel">
+          <div class="crt__screen">
+            <div class="screen__ui">
+              <div class="viewport">
+                <div class="scene scene--work" id="scene-work">
+                  <div class="grid-os">
+                    <div class="grid-os__head"><span id="gridDate">1-Jan-87</span><span class="grid-os__frozen">1:44 am</span></div>
+                    <div class="grid-os__tabs" id="gridTabs" role="tablist" aria-label="Filter files"></div>
+                    <ul class="grid-os__list" id="gridList" role="listbox" aria-label="Files"></ul>
+                    <dl class="grid-os__detail" id="gridDetail"></dl>
+                    <div class="grid-os__foot">Select a file and confirm · <kbd><Icon name="corner-down-left" /></kbd> to open · <kbd><Icon name="chevron-up" /></kbd><kbd><Icon name="chevron-down" /></kbd> to browse</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <canvas class="static" width="160" height="100" aria-hidden="true"></canvas>
+            <div class="scanlines" aria-hidden="true"></div>
+            <div class="glass" aria-hidden="true"></div>
+          </div>
+          <div class="crt__chin">
+            <button class="chin-arrow" data-nav="prev" aria-label="Previous section"><Icon name="chevron-left" /></button>
+            <span class="brand">MNEMOS-87 <b>· files</b></span>
+            <i class="power__led" aria-hidden="true"></i>
+            <button class="chin-arrow" data-nav="next" aria-label="Next section"><Icon name="chevron-right" /></button>
+          </div>
+        </div>
+      </div>
+
+      <div class="desk">
+        <!-- KEYPAD -->
+        <div class="keypad" role="group" aria-label="Keypad controls" data-ui>
+          <div class="keypad__grid">
+            <button class="key" data-mood-set="calm"  aria-label="Mood: calm"><Icon name="smile" /></button>
+            <button class="key" data-mood-set="numb"  aria-label="Mood: numb"><Icon name="meh" /></button>
+            <button class="key" data-mood-set="dread" aria-label="Mood: dread"><Icon name="frown" /></button>
+            <span></span>
+            <button class="key key--arrow" data-key="up" aria-label="Up"><Icon name="chevron-up" /></button>
+            <span></span>
+            <button class="key" data-key="a" aria-label="A: confirm">A</button>
+            <button class="key" data-key="b" aria-label="B: back">B</button>
+            <button class="key" data-key="c" aria-label="C: call (contact)">C</button>
+            <button class="key key--arrow key--nav" data-key="left" aria-label="Previous section"><Icon name="chevron-left" /></button>
+            <button class="key key--arrow" data-key="down" aria-label="Down"><Icon name="chevron-down" /></button>
+            <button class="key key--arrow key--nav" data-key="right" aria-label="Next section"><Icon name="chevron-right" /></button>
+          </div>
+          <button class="key key--enter" data-key="enter" aria-label="Enter / confirm"><Icon name="corner-down-left" /></button>
+          <p class="keypad__legend">A ok · B back · C call · <Icon name="chevron-left" /><Icon name="chevron-right" /> rooms · <Icon name="chevron-up" /><Icon name="chevron-down" /> browse</p>
+        </div>
+      </div>
+
+    </section>

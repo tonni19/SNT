@@ -1,0 +1,49 @@
+---
+/** One page per competition, jam or event in src/content/achievements. */
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import Crt from '../../components/Crt.astro';
+import Icon from '../../components/Icon.astro';
+
+export async function getStaticPaths() {
+  const items = await getCollection('achievements', ({ data }) => !data.draft);
+  return items.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}
+interface Props { entry: CollectionEntry<'achievements'>; }
+const { entry } = Astro.props;
+const d = entry.data;
+const { Content } = await render(entry);
+---
+<Base title={`${d.title} · Achievements · Sadia Noman Tonni`} description={`${d.event}: ${d.result}`} current="achievements">
+  <main class="stage">
+    <section class="room room--doc" aria-labelledby="docTitle">
+      <header class="room__head">
+        <h1 class="room__title" id="docTitle">{d.title}</h1>
+        <p class="room__lead">{d.event} · {d.result}</p>
+      </header>
+      <Crt channel="high scores" back={{ href: '/#achievements', label: 'All achievements' }}>
+        <div class="scene scene--doc">
+          <ul class="doc-meta">
+            <li>{d.date.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}</li>
+            {d.role && <li>Role: <b>{d.role}</b></li>}
+            {d.team && <li>Team: <b>{d.team}{d.team_members.length > 0 ? ` (${d.team_members.join(', ')})` : ''}</b></li>}
+            {d.tools.length > 0 && <li>Tools: <b>{d.tools.join(', ')}</b></li>}
+            <li>Result: <b>{d.result}</b></li>
+          </ul>
+          <div class="doc-panels">
+            <div><h2>What I learned</h2><p>{d.learned ?? 'Reflection coming soon.'}</p></div>
+            <div><h2>The experience</h2><p>{d.experience ?? 'Reflection coming soon.'}</p></div>
+            <div><h2>My verdict</h2><p>{d.verdict ?? 'Reflection coming soon.'}</p></div>
+          </div>
+          <article class="doc"><Content /></article>
+          {d.links.length > 0 && (
+            <div class="doc">
+              <h2>Links</h2>
+              <ul>{d.links.map((l) => <li><a href={l.url} target="_blank" rel="noopener">{l.label} <Icon name="arrow-up-right" /></a></li>)}</ul>
+            </div>
+          )}
+        </div>
+      </Crt>
+    </section>
+  </main>
+</Base>

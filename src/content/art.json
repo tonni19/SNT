@@ -1,0 +1,191 @@
+[
+  {
+    "id": "cosmos",
+    "title": "Cosmos",
+    "category": "portrait",
+    "path": "/art/portrait/cosmos",
+    "image": "../assets/art/cosmos.webp",
+    "featured": true,
+    "order": 0
+  },
+  {
+    "id": "spearbearer",
+    "title": "Spearbearer",
+    "category": "game-characters",
+    "path": "/art/game-characters/spearbearer",
+    "image": "../assets/art/spearbearer.webp",
+    "featured": true,
+    "order": 1
+  },
+  {
+    "id": "the-hut",
+    "title": "The Hut",
+    "category": "animation",
+    "path": "/art/animation/the-hut",
+    "image": "../assets/art/the-hut.webp",
+    "featured": true,
+    "order": 2
+  },
+  {
+    "id": "the-anthill",
+    "title": "The Anthill",
+    "category": "comic",
+    "path": "/comic/ants",
+    "image": "../assets/art/the-anthill.webp",
+    "featured": true,
+    "order": 3
+  },
+  {
+    "id": "nimbu",
+    "title": "Nimbu",
+    "category": "custom",
+    "path": "/art/custom/nimbu",
+    "image": "../assets/art/nimbu.webp",
+    "featured": true,
+    "order": 4
+  },
+  {
+    "id": "strike",
+    "title": "Strike",
+    "category": "wallpaper",
+    "path": "/art/wallpaper/strike",
+    "image": "../assets/art/strike.webp",
+    "featured": true,
+    "order": 5
+  },
+  {
+    "id": "smoke",
+    "title": "Smoke",
+    "category": "portrait",
+    "path": "/art/portrait/smoke",
+    "image": "../assets/art/smoke.webp",
+    "featured": false,
+    "order": 6
+  },
+  {
+    "id": "two-fish",
+    "title": "Two Fish",
+    "category": "portrait",
+    "path": "/art/portrait/two-fish",
+    "image": "../assets/art/two-fish.webp",
+    "featured": false,
+    "order": 7
+  },
+  {
+    "id": "coco",
+    "title": "Coco",
+    "category": "portrait",
+    "path": "/art/portrait/coco",
+    "image": "../assets/art/coco.webp",
+    "featured": false,
+    "order": 8
+  },
+  {
+    "id": "model-sheet",
+    "title": "Model Sheet",
+    "category": "game-characters",
+    "path": "/art/game-characters/model-sheet",
+    "image": "../assets/art/model-sheet.webp",
+    "featured": false,
+    "order": 9
+  },
+  {
+    "id": "lead-front",
+    "title": "Lead / Front",
+    "category": "game-characters",
+    "path": "/art/game-characters/lead-front",
+    "image": "../assets/art/lead-front.webp",
+    "featured": false,
+    "order": 10
+  },
+  {
+    "id": "grocers-stall",
+    "title": "Grocer's Stall",
+    "category": "game-characters",
+    "path": "/art/game-characters/grocers-stall",
+    "image": "../assets/art/grocers-stall.webp",
+    "featured": false,
+    "order": 11
+  },
+  {
+    "id": "umbrella-cart",
+    "title": "Umbrella Cart",
+    "category": "game-characters",
+    "path": "/art/game-characters/umbrella-cart",
+    "image": "../assets/art/umbrella-cart.webp",
+    "featured": false,
+    "order": 12
+  },
+  {
+    "id": "jai-jai-store",
+    "title": "Jai Jai Store",
+    "category": "game-characters",
+    "path": "/art/game-characters/jai-jai-store",
+    "image": "../assets/art/jai-jai-store.webp",
+    "featured": false,
+    "order": 13
+  },
+  {
+    "id": "we-stay-prepared",
+    "title": "We Stay Prepared",
+    "category": "comic",
+    "path": "/art/comic/we-stay-prepared",
+    "image": "../assets/art/we-stay-prepared.webp",
+    "featured": false,
+    "order": 14
+  },
+  {
+    "id": "still-more",
+    "title": "Still More",
+    "category": "animation",
+    "path": "/art/animation/still-more",
+    "image": "../assets/art/still-more.webp",
+    "featured": false,
+    "order": 15
+  },
+  {
+    "id": "sunburst",
+    "title": "Sunburst",
+    "category": "animation",
+    "path": "/art/animation/sunburst",
+    "image": "../assets/art/sunburst.webp",
+    "featured": false,
+    "order": 16
+  },
+  {
+    "id": "cat-nap",
+    "title": "Cat Nap",
+    "category": "custom",
+    "path": "/art/custom/cat-nap",
+    "image": "../assets/art/cat-nap.webp",
+    "featured": false,
+    "order": 17
+  },
+  {
+    "id": "lemon",
+    "title": "Lemon",
+    "category": "custom",
+    "path": "/art/custom/lemon",
+    "image": "../assets/art/lemon.webp",
+    "featured": false,
+    "order": 18
+  },
+  {
+    "id": "nightie",
+    "title": "Nightie",
+    "category": "wallpaper",
+    "path": "/art/wallpaper/nightie",
+    "image": "../assets/art/nightie.webp",
+    "featured": false,
+    "order": 19
+  },
+  {
+    "id": "nahin",
+    "title": "Nahin",
+    "category": "wallpaper",
+    "path": "/art/wallpaper/nahin",
+    "image": "../assets/art/nahin.webp",
+    "featured": false,
+    "order": 20
+  }
+]
