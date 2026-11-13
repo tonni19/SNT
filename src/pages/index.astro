@@ -15,6 +15,7 @@ import ProfileRoom from '../components/ProfileRoom.astro';
 import TimelineRoom from '../components/TimelineRoom.astro';
 import ContactRoom from '../components/ContactRoom.astro';
 import * as data from '../data/site';
+import { url } from '../lib/url';
 
 // everything the desk's behaviour script needs, handed over as JSON
 const clientData = {
@@ -23,7 +24,7 @@ const clientData = {
   dialogue: data.dialogue,
   profile: data.profile,
   interests: data.interests,
-  files: data.files,
+  files: data.files.map((f) => (f.url && f.url.startsWith('/') ? { ...f, url: url(f.url) } : f)),
   timeline: data.timeline,
   links: data.links,
   memo: data.memo,

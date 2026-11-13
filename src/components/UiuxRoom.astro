@@ -1,4 +1,5 @@
 ---
+import { url } from '../lib/url';
 /**
  * UI/UX LAB: three shelves (analyses, case studies, recreations) that fill from
  * src/content/uiux by `type`, plus the interfaces already shipped. An empty
@@ -33,7 +34,7 @@ const fmt = (d: Date) => d.toLocaleDateString('en-GB', { month: 'short', year: '
                   <ul class="lab__list">
                     {items.map((e) => (
                       <li>
-                        <a href={`/uiux/${e.id}/`}>
+                        <a href={url(`/uiux/${e.id}/`)}>
                           <b>{e.data.title}</b>
                           <span>{e.data.product} · {fmt(e.data.date)}{e.data.status === 'in-progress' ? ' · in progress' : ''}</span>
                         </a>

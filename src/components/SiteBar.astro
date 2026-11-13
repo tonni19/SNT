@@ -1,4 +1,5 @@
 ---
+import { url } from '../lib/url';
 /**
  * The sticky top bar: EP counter, room links, the one action, and a menu on phones.
  * Links point at "/#room" so they also work from the detail pages; on the home
@@ -12,10 +13,10 @@ const idx = Math.max(0, sections.findIndex((s) => s.id === current));
 ---
 <header class="site-bar" id="siteBar">
   <div class="site-bar__inner">
-    <a class="site-bar__brand" href="/#home" data-go="home"><span class="ep" id="ep" aria-live="polite" data-ui>EP.{idx + 1}</span><span>Tonni</span></a>
+    <a class="site-bar__brand" href={url('/#home')} data-go="home"><span class="ep" id="ep" aria-live="polite" data-ui>EP.{idx + 1}</span><span>Tonni</span></a>
     <nav class="rail" id="rail" aria-label="Sections">
       {sections.map((s, i) => (
-        <a href={`/#${s.id}`} data-go={s.id} title={`${i + 1} · ${s.title}`} class:list={{ 'is-current': s.id === current }} aria-current={s.id === current ? 'true' : undefined}>
+        <a href={url(`/#${s.id}`)} data-go={s.id} title={`${i + 1} · ${s.title}`} class:list={{ 'is-current': s.id === current }} aria-current={s.id === current ? 'true' : undefined}>
           <Icon name={s.icon} /><span class="rail__label">{s.nav}</span>
         </a>
       ))}
@@ -24,11 +25,11 @@ const idx = Math.max(0, sections.findIndex((s) => s.id === current));
       <Icon name="zap" class="fx-on" /><Icon name="zap-off" class="fx-off" />
       <span class="fx-toggle__label">Effects <b class="fx-on">on</b><b class="fx-off">off</b></span>
     </button>
-    <a class="btn btn--primary site-bar__cta" href="/#contact" data-go="contact">Get in touch <Icon name="arrow-right" /></a>
+    <a class="btn btn--primary site-bar__cta" href={url('/#contact')} data-go="contact">Get in touch <Icon name="arrow-right" /></a>
     <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="menu"><Icon name="menu" /> Menu</button>
     <ul class="menu" id="menu" hidden>
       {sections.map((s) => (
-        <li><a href={`/#${s.id}`} data-go={s.id} class:list={{ 'is-current': s.id === current }}><span><Icon name={s.icon} />{s.title}</span><span>{s.label}</span></a></li>
+        <li><a href={url(`/#${s.id}`)} data-go={s.id} class:list={{ 'is-current': s.id === current }}><span><Icon name={s.icon} />{s.title}</span><span>{s.label}</span></a></li>
       ))}
     </ul>
   </div>
