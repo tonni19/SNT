@@ -1,10 +1,9 @@
 ---
-import { url } from '../../lib/url';
 /** One page per analysis, case study or recreation in src/content/uiux. */
 import { getCollection, render, type CollectionEntry } from 'astro:content';
 import Base from '../../layouts/Base.astro';
-import Crt from '../../components/Crt.astro';
 import Icon from '../../components/Icon.astro';
+import { url } from '../../lib/url';
 
 export async function getStaticPaths() {
   const items = await getCollection('uiux', ({ data }) => !data.draft);
@@ -16,31 +15,23 @@ const d = entry.data;
 const { Content } = await render(entry);
 const TYPE = { analysis: 'Product analysis', 'case-study': 'Case study', recreation: 'Recreation' };
 ---
-<Base title={`${d.title} · UI/UX · Sadia Noman Tonni`} description={d.summary} current="uiux">
-  <main class="stage">
-    <section class="room room--doc" aria-labelledby="docTitle">
-      <header class="room__head">
-        <h1 class="room__title" id="docTitle">{d.title}</h1>
-        <p class="room__lead">{d.summary}</p>
-      </header>
-      <Crt channel="design lab" back={{ href: url('/#uiux'), label: 'UI/UX lab' }}>
-        <div class="scene scene--doc">
-          <ul class="doc-meta">
-            <li>{TYPE[d.type]}</li>
-            <li>Product: <b>{d.product}</b></li>
-            {d.role && <li>Role: <b>{d.role}</b></li>}
-            {d.tools.length > 0 && <li>Tools: <b>{d.tools.join(', ')}</b></li>}
-            <li>{d.date.toLocaleDateString('en-GB', { month: 'long', year: 'numeric' })}{d.status === 'in-progress' ? ' · in progress' : ''}</li>
-          </ul>
-          <article class="doc"><Content /></article>
-          {d.links.length > 0 && (
-            <div class="doc">
-              <h2>Links</h2>
-              <ul>{d.links.map((l) => <li><a href={l.url} target="_blank" rel="noopener">{l.label} <Icon name="arrow-up-right" /></a></li>)}</ul>
-            </div>
-          )}
-        </div>
-      </Crt>
-    </section>
-  </main>
+<Base title={`${d.title} · Sadia Noman Tonni`} description={d.summary}>
+  <article class="page">
+    <div class="wrap">
+      <a class="page__back" href={url('/#lab')}><Icon name="arrow-left" /> UI/UX lab</a>
+      <h1 class="display page__title">{d.title}</h1>
+      <p class="page__lead">{d.summary}</p>
+      <ul class="page__meta" role="list">
+        <li>{TYPE[d.type]}</li>
+        <li>Product: <b>{d.product}</b></li>
+        {d.role && <li>Role: <b>{d.role}</b></li>}
+        {d.tools.length > 0 && <li>Tools: <b>{d.tools.join(', ')}</b></li>}
+        <li>{d.date.toLocaleDateString('en-GB', { month: 'long', year: 'numeric' })}{d.status === 'in-progress' ? ' · in progress' : ''}</li>
+      </ul>
+      <div class="prose">
+        <Content />
+        {d.links.length > 0 && (<><h2>Links</h2><ul>{d.links.map((l) => <li><a href={l.url} target="_blank" rel="noopener">{l.label}</a></li>)}</ul></>)}
+      </div>
+    </div>
+  </article>
 </Base>

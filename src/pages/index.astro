@@ -1,51 +1,36 @@
 ---
 /**
- * The home page: the whole desk, room by room. Each room is its own component
- * in src/components; reorder them here (and in `sections` in src/data/site.ts).
+ * The home page. Each section is a component in src/components; the scroll
+ * choreography lives in src/scripts/motion.js.
  */
 import Base from '../layouts/Base.astro';
-import Boot from '../components/Boot.astro';
-import HomeRoom from '../components/HomeRoom.astro';
-import WorkRoom from '../components/WorkRoom.astro';
-import UiuxRoom from '../components/UiuxRoom.astro';
-import ArtRoom from '../components/ArtRoom.astro';
-import ResearchRoom from '../components/ResearchRoom.astro';
-import AchievementsRoom from '../components/AchievementsRoom.astro';
-import ProfileRoom from '../components/ProfileRoom.astro';
-import TimelineRoom from '../components/TimelineRoom.astro';
-import ContactRoom from '../components/ContactRoom.astro';
-import * as data from '../data/site';
-import { url } from '../lib/url';
-
-// everything the desk's behaviour script needs, handed over as JSON
-const clientData = {
-  ...data.site,
-  sections: data.sections,
-  dialogue: data.dialogue,
-  profile: data.profile,
-  interests: data.interests,
-  files: data.files.map((f) => (f.url && f.url.startsWith('/') ? { ...f, url: url(f.url) } : f)),
-  timeline: data.timeline,
-  links: data.links,
-  memo: data.memo,
-  dreadMemo: data.dreadMemo,
-};
+import Hero from '../components/Hero.astro';
+import FangReveal from '../components/FangReveal.astro';
+import FilmStrip from '../components/FilmStrip.astro';
+import Story from '../components/Story.astro';
+import Numbers from '../components/Numbers.astro';
+import Built from '../components/Built.astro';
+import Lab from '../components/Lab.astro';
+import Research from '../components/Research.astro';
+import Events from '../components/Events.astro';
+import Log from '../components/Log.astro';
+import Band from '../components/Band.astro';
+import Contact from '../components/Contact.astro';
 ---
-<Base current="home" bodyClass="is-locked">
-  <Boot slot="before" />
-  <main class="stage" id="stage">
-    <HomeRoom />
-    <WorkRoom />
-    <UiuxRoom />
-    <ArtRoom />
-    <ResearchRoom />
-    <AchievementsRoom />
-    <ProfileRoom />
-    <TimelineRoom />
-    <ContactRoom />
-  </main>
-  <script type="application/json" id="site-data" set:html={JSON.stringify(clientData)} />
+<Base>
+  <Hero />
+  <FangReveal />
+  <FilmStrip />
+  <Story />
+  <Numbers />
+  <Built />
+  <Lab />
+  <Research />
+  <Events />
+  <Log />
+  <Band />
+  <Contact />
   <script>
-    import '../scripts/desk.js';
+    import '../scripts/motion.js';
   </script>
 </Base>

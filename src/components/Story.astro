@@ -1,0 +1,25 @@
+---
+/**
+ * STORY: one big sentence that reads itself in, word by word, as you scroll
+ * (motion.js), then three short facts about what I do.
+ */
+import { Image } from 'astro:assets';
+import { site, story, about, skills, heroArt } from '../data/site';
+const words = story.split(' ');
+const src = (p: string) => (p.startsWith('/art/') ? `${site.artPortfolio}${p}` : p);
+---
+<section class="story" id="about" aria-labelledby="storyTitle">
+  <div class="wrap">
+    <h2 class="visually-hidden" id="storyTitle">About me</h2>
+    <p class="story__text">{words.map((w) => <><span class="w">{w}</span> </>)}</p>
+    <div class="story__sticker">
+      <Image src={src(heroArt.sticker.src)} alt={heroArt.sticker.alt} width={heroArt.sticker.width} height={heroArt.sticker.height} widths={[220, 380]} sizes="190px" />
+    </div>
+    <div class="story__aside">
+      <div><h3>Art</h3><p>{about.art}</p></div>
+      <div><h3>Build</h3><p>{about.build}</p></div>
+      <div><h3>Research</h3><p>{about.research} I study at {site.studies}.</p></div>
+      <div style="grid-column: 1 / -1"><h3>Tools and skills</h3><ul>{skills.map((s) => <li>{s}</li>)}</ul></div>
+    </div>
+  </div>
+</section>

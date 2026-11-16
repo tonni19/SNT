@@ -1,0 +1,34 @@
+---
+/**
+ * The fixed bar: brand, four links, the Motion switch, one action, and a
+ * full-screen menu on phones. It hides while you scroll down and comes back
+ * when you scroll up (set by motion.js / ui.js).
+ */
+import { Image } from 'astro:assets';
+import Icon from './Icon.astro';
+import { site, nav } from '../data/site';
+import { url } from '../lib/url';
+const avatar = `${site.artPortfolio}/art/my-avatars/tortilla.webp`;
+---
+<header class="bar" id="bar">
+  <div class="bar__in">
+    <a class="bar__brand" href={url('/')} aria-label={`${site.name}, home`}>
+      <Image src={avatar} alt="" width={1080} height={1350} widths={[68]} sizes="34px" />
+      <span>TONNI</span>
+    </a>
+    <nav class="bar__nav" aria-label="Main">
+      {nav.map((n) => <a href={url(`/#${n.id}`)}>{n.label}</a>)}
+    </nav>
+    <button class="bar__motion" id="motionBtn" type="button" aria-pressed="true">
+      <Icon name="zap" class="m-on" /><Icon name="zap-off" class="m-off" />
+      <span>Motion <b class="m-on">on</b><b class="m-off">off</b></span>
+    </button>
+    <a class="btn btn--plum bar__cta" href={url('/#contact')}>Let's talk <Icon name="arrow-up-right" /></a>
+    <button class="bar__menu" id="menuBtn" type="button" aria-expanded="false" aria-controls="sheet"><Icon name="menu" /> Menu</button>
+  </div>
+</header>
+<nav class="sheet" id="sheet" aria-label="Menu" hidden>
+  <button class="sheet__close" id="sheetClose" type="button"><Icon name="x" /> Close</button>
+  {nav.map((n) => <a href={url(`/#${n.id}`)}>{n.label}</a>)}
+  <a href={url('/#contact')}>Contact</a>
+</nav>

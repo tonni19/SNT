@@ -1,0 +1,52 @@
+---
+/**
+ * ART: a strip of film that pans sideways as you scroll (motion.js pins it).
+ * Frames come from src/content/art.json (synced from Tortfolio); every frame
+ * opens that piece on the art portfolio. Featured pieces lead.
+ */
+import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
+import Icon from './Icon.astro';
+import { site, artCategories } from '../data/site';
+
+const all = (await getCollection('art', ({ data }) => !data.hidden)).sort(
+  (a, b) => Number(b.data.featured) - Number(a.data.featured) || a.data.order - b.data.order,
+);
+// the featured pieces, then one more from each category so every channel shows up
+const picked = [...all.filter((p) => p.data.featured)];
+for (const c of artCategories) {
+  const extra = all.find((p) => p.data.category === c.id && !picked.includes(p));
+  if (extra) picked.push(extra);
+}
+const catTitle = Object.fromEntries(artCategories.map((c) => [c.id, c.title]));
+const count = (id: string) => all.filter((p) => p.data.category === id).length;
+---
+<section class="strip" id="art" aria-labelledby="artTitle">
+  <div class="wrap">
+    <header class="sec-head">
+      <h2 class="display sec-head__title" id="artTitle">Frames from Tortilla</h2>
+      <p class="sec-head__lead">Characters, game assets, comics and animation. Every frame opens that piece on my art portfolio.</p>
+    </header>
+  </div>
+
+  <div class="strip__viewport">
+    <ul class="strip__rail" role="list">
+      {picked.map((p) => (
+        <li class:list={['frame', { 'frame--wide': p.data.width / p.data.height > 1.3 }]}>
+          <a href={`${site.artPortfolio}${p.data.path}`} target="_blank" rel="noopener" aria-label={`${p.data.title}, ${catTitle[p.data.category]}. Opens on the art portfolio.`}>
+            <Image src={`${site.artPortfolio}${p.data.image}`} width={p.data.width} height={p.data.height} alt="" widths={[420, 640, 900]} sizes="(max-width: 640px) 80vw, 30vw" loading="lazy" />
+            <span class="frame__cap"><span><b>{p.data.title}</b><br /><span>{catTitle[p.data.category]}</span></span><Icon name="arrow-up-right" /></span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+
+  <div class="wrap">
+    <div class="strip__cats">
+      {artCategories.map((c) => (
+        <a class="chip" href={`${site.artPortfolio}${c.path}`} target="_blank" rel="noopener">{c.title} <small>{count(c.id)}</small></a>
+      ))}
+    </div>
+  </div>
+</section>

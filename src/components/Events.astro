@@ -1,0 +1,45 @@
+---
+/**
+ * EVENTS: competitions, jams and events from src/content/achievements. Each
+ * row opens to what I learned, the experience, and my verdict.
+ */
+import { getCollection } from 'astro:content';
+import Icon from './Icon.astro';
+import { url } from '../lib/url';
+const items = (await getCollection('achievements', ({ data }) => !data.draft)).sort((a, b) => +b.data.date - +a.data.date);
+const fmt = (d: Date) => d.toLocaleDateString('en-GB', { month: 'short', year: 'numeric' });
+const TYPE: Record<string, string> = { competition: 'Competition', hackathon: 'Hackathon', 'game-jam': 'Game jam', event: 'Event', workshop: 'Workshop', volunteering: 'Volunteering', other: 'Other' };
+---
+<section class="events" id="events" aria-labelledby="eventsTitle">
+  <div class="wrap">
+    <header class="sec-head">
+      <h2 class="display sec-head__title" id="eventsTitle">Events</h2>
+      <p class="sec-head__lead">Competitions, game jams and events I've taken part in: what I achieved, what I learned, and my honest verdict.</p>
+    </header>
+    {items.length ? items.map((a) => (
+      <details class="event">
+        <summary>
+          <span class="event__date">{fmt(a.data.date)}</span>
+          <span class="event__name">{a.data.title}<small>{a.data.event} · {TYPE[a.data.type]}{a.data.role ? ` · ${a.data.role}` : ''}</small></span>
+          <span class="event__result">{a.data.result}</span>
+          <span class="event__toggle" aria-hidden="true"><Icon name="plus" /></span>
+        </summary>
+        <div class="event__body">
+          {(a.data.team || a.data.tools.length > 0) && (
+            <p class="event__team">
+              {a.data.team && <span>Team {a.data.team}{a.data.team_members.length ? `: ${a.data.team_members.join(', ')}` : ''}</span>}
+              {a.data.tools.length > 0 && <span>{a.data.tools.join(' · ')}</span>}
+            </p>
+          )}
+          {[['What I learned', a.data.learned], ['The experience', a.data.experience], ['My verdict', a.data.verdict]].map(([h, t]) => (
+            <div><h4>{h}</h4>{t ? <p>{t}</p> : <p class="pending">Reflection coming soon.</p>}</div>
+          ))}
+          <p class="event__links">
+            <a href={url(`/achievements/${a.id}/`)}>The full story <Icon name="arrow-right" /></a>
+            {a.data.links.slice(0, 2).map((l) => <a href={l.url} target="_blank" rel="noopener">{l.label} <Icon name="arrow-up-right" /></a>)}
+          </p>
+        </div>
+      </details>
+    )) : <p class="events__empty">The first entries are being written.</p>}
+  </div>
+</section>

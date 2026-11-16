@@ -1,0 +1,9 @@
+---
+/** MEDIA BAND: two lines of giant words that slide against each other with the scroll. */
+const a = ['Art', 'Game assets', 'Comics', 'Animation'];
+const b = ['UI/UX', 'Research', 'Interfaces', 'HCI'];
+---
+<section class="band" aria-hidden="true">
+  <div class="band__line band__line--a">{[...a, ...a, ...a].map((w) => <span>{w}</span>)}</div>
+  <div class="band__line band__line--b">{[...b, ...b, ...b].map((w) => <span>{w}</span>)}</div>
+</section>

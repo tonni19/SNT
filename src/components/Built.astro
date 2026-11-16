@@ -1,0 +1,27 @@
+---
+/** BUILT: things I've made, as big rows. Each opens live or in code. */
+import Icon from './Icon.astro';
+import { built } from '../data/site';
+---
+<section class="built" id="built" aria-labelledby="builtTitle">
+  <div class="wrap">
+    <header class="sec-head">
+      <h2 class="display sec-head__title" id="builtTitle">Things I built</h2>
+      <p class="sec-head__lead">Interfaces with real users: a planner, a housing platform, my art portfolio. Open them live or read the code.</p>
+    </header>
+    <ul class="built__list" role="list">
+      {built.map((b) => (
+        <li class="row">
+          <div>
+            <span class="row__name">{b.name}</span>
+            <span class="row__what">{b.what}<small>{b.meta}</small></span>
+            <span class="row__go">
+              {b.live && <a href={b.live} target="_blank" rel="noopener">Live <Icon name="arrow-up-right" /></a>}
+              {b.code && <a href={b.code} target="_blank" rel="noopener">Code <Icon name="code" /></a>}
+            </span>
+          </div>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>

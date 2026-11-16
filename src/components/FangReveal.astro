@@ -1,0 +1,25 @@
+---
+/**
+ * FANG REVEAL: the night scene (one of my animations) gets swallowed by a
+ * jaw of cream fangs rising from below, and a statement lands on the cream.
+ * Without motion the section simply shows the statement.
+ */
+import { site, heroArt } from '../data/site';
+const src = (p: string) => (p.startsWith('/art/') ? `${site.artPortfolio}${p}` : p);
+---
+<section class="fang" id="intro" aria-labelledby="fangSay">
+  <div class="fang__art" aria-hidden="true">
+    <video src={src(heroArt.night.video)} poster={src(heroArt.night.poster)} muted loop playsinline preload="metadata" data-autoplay></video>
+  </div>
+  <p class="fang__caption">Now playing: {heroArt.night.alt}.</p>
+
+  <div class="fang__teeth" aria-hidden="true">
+    <svg viewBox="0 0 1440 400" preserveAspectRatio="none" style="height: var(--tooth-h, 30vw)">
+      <path fill="currentColor" d="M0 400V300Q240 300 330 24Q420 300 560 300Q610 300 640 236Q672 300 720 300Q768 300 800 236Q830 300 880 300Q1020 300 1110 24Q1200 300 1440 300V400Z" />
+    </svg>
+  </div>
+
+  <div class="fang__say">
+    <p class="display" id="fangSay">I draw. I build.<br /><em>I study how people<br />read machines.</em></p>
+  </div>
+</section>

@@ -1,0 +1,20 @@
+---
+/** NUMBERS: real counts, taken from the content itself. They count up on arrival. */
+import { getCollection } from 'astro:content';
+import { built, artCategories } from '../data/site';
+const art = (await getCollection('art', ({ data }) => !data.hidden)).length;
+const papers = (await getCollection('research', ({ data }) => !data.draft)).length;
+const events = (await getCollection('achievements', ({ data }) => !data.draft)).length;
+const stats = [
+  { n: art, label: 'artworks on my art portfolio' },
+  { n: artCategories.length, label: 'kinds of art: portraits to wallpapers' },
+  { n: built.length, label: 'interfaces built and shipped' },
+  { n: papers, label: papers === 1 ? 'research paper, at ACM IUI 2027' : 'research papers' },
+  { n: events, label: events === 1 ? 'game jam, IUT ICT Fest 2026' : 'competitions and jams' },
+];
+---
+<section class="nums" aria-label="In numbers">
+  <div class="wrap nums__grid">
+    {stats.map((s) => <div class="num"><b data-count={s.n}>{s.n}</b><span>{s.label}</span></div>)}
+  </div>
+</section>

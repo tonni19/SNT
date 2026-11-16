@@ -1,0 +1,15 @@
+---
+/** RESEARCH: papers, posters and preprints from src/content/research, newest first. */
+import { getCollection } from 'astro:content';
+import ResearchCard from './ResearchCard.astro';
+const papers = (await getCollection('research', ({ data }) => !data.draft)).sort((a, b) => b.data.year - a.data.year);
+---
+<section class="research" id="research" aria-labelledby="researchTitle">
+  <div class="wrap">
+    <header class="sec-head">
+      <h2 class="display sec-head__title" id="researchTitle">Research</h2>
+      <p class="sec-head__lead">AI × HCI: how people understand the rules machines follow. arXiv and Google Scholar links appear here as each paper goes public.</p>
+    </header>
+    <div style="display: grid; gap: 18px">{papers.map((p) => <ResearchCard entry={p} />)}</div>
+  </div>
+</section>

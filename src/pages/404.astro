@@ -1,20 +1,14 @@
 ---
-import { url } from '../lib/url';
 import Base from '../layouts/Base.astro';
-import Crt from '../components/Crt.astro';
+import Icon from '../components/Icon.astro';
+import { url } from '../lib/url';
 ---
-<Base title="No signal · Sadia Noman Tonni">
-  <main class="stage">
-    <section class="room room--doc" aria-labelledby="lostTitle">
-      <header class="room__head">
-        <h1 class="room__title" id="lostTitle">No signal</h1>
-        <p class="room__lead">This room doesn't exist. Or it did, and something moved it.</p>
-      </header>
-      <Crt channel="channel 404" back={{ href: url('/'), label: 'Back to the desk' }}>
-        <div class="scene scene--doc">
-          <div class="doc"><p>Check the address, or go back to the desk and take the stairs you know.</p></div>
-        </div>
-      </Crt>
-    </section>
-  </main>
+<Base title="Not found · Sadia Noman Tonni">
+  <section class="page">
+    <div class="wrap">
+      <h1 class="display page__title">Nothing drawn here</h1>
+      <p class="page__lead">This page doesn't exist, or it moved. The rest of the work is one click away.</p>
+      <a class="btn btn--plum" href={url('/')}><Icon name="arrow-left" /> Back to the start</a>
+    </div>
+  </section>
 </Base>
