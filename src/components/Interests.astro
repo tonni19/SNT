@@ -1,0 +1,21 @@
+---
+/** INTERESTS: what I research and what I like to make. Edit the lists in src/data/site.ts. */
+import { researchInterests, creativeInterests, interestsNote } from '../data/site';
+---
+<section class="interests" id="interests" aria-labelledby="interestsTitle">
+  <div class="wrap">
+    <header class="sec-head">
+      <h2 class="display sec-head__title" id="interestsTitle">Interests</h2>
+    </header>
+    <div class="interests__grid">
+      <div class="interests__col">
+        <h3>Research interests</h3>
+        <ol>{researchInterests.map((r) => <li>{r}</li>)}</ol>
+      </div>
+      <div class="interests__col">
+        <h3>Creative and game development</h3>
+        <ol>{creativeInterests.map((r) => <li>{r}</li>)}</ol>
+      </div>
+    </div>
+  </div>
+</section>

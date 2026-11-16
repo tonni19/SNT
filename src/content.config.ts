@@ -64,7 +64,7 @@ const research = defineCollection({
   loader: glob({ pattern: '**/[^_]*.md', base: './src/content/research' }),
   schema: z.object({
     title: z.string(),
-    authors: z.array(z.string()),
+    authors: z.array(z.string()).default([]),
     venue: z.string(),
     type: z.enum(['paper', 'poster', 'preprint', 'talk', 'thesis']),
     year: z.number(),
@@ -77,6 +77,10 @@ const research = defineCollection({
     poster: z.url().optional(),
     code: z.url().optional(),
     bibtex: z.string().optional(),
+    /** Links that will exist later; they show as "soon" until a url is added. */
+    soon: z.array(z.enum(['arxiv', 'scholar', 'doi', 'pdf', 'poster', 'code'])).default([]),
+    /** Lower numbers come first on the home page. */
+    order: z.number().default(50),
     tags: z.array(z.string()).default([]),
     draft: z.boolean().default(false),
   }),
@@ -90,8 +94,12 @@ const achievements = defineCollection({
   schema: z.object({
     title: z.string(),
     event: z.string(),
-    type: z.enum(['competition', 'hackathon', 'game-jam', 'event', 'workshop', 'volunteering', 'other']),
-    date: z.coerce.date(),
+    type: z.enum(['publication', 'competition', 'hackathon', 'game-jam', 'event', 'workshop', 'volunteering', 'other']),
+    year: z.number().optional(),
+    /** Add the exact date when you know it; the year alone is fine. */
+    date: z.coerce.date().optional(),
+    /** Lower numbers come first on the home page. */
+    order: z.number().default(50),
     role: z.string().optional(),
     team: z.string().optional(),
     result: z.string(),

@@ -6,13 +6,13 @@
 import '../styles/global.css';
 import Icons from '../components/Icons.astro';
 import Header from '../components/Header.astro';
-import { site } from '../data/site';
+import { site, socials } from '../data/site';
 import { url } from '../lib/url';
 
 interface Props { title?: string; description?: string; }
 const {
-  title = `${site.name} · artist, designer, researcher`,
-  description = `${site.name} (Tortilla): artist, game asset creator, UI/UX designer and AI × HCI researcher.`,
+  title = `${site.name} · HCI researcher, designer, game artist`,
+  description = `${site.name}: CSE undergraduate working on human-computer interaction, human-centered AI, game UX, design and creative technology. Also draws as Tortilla.`,
 } = Astro.props;
 ---
 <!doctype html>
@@ -50,7 +50,7 @@ const {
   <footer class="foot">
     <div class="wrap">
       <span>© 2026 {site.name}. Drawn and built by hand.</span>
-      <span><a href={site.artPortfolio} target="_blank" rel="noopener">Art portfolio</a> · <a href={site.github} target="_blank" rel="noopener">GitHub</a> · <a href={`mailto:${site.email}`}>{site.email}</a></span>
+      <span class="foot__links">{socials.filter((l) => l.url).map((l) => <a href={l.url!} target="_blank" rel="noopener">{l.label}</a>)}<a href={site.artPortfolio} target="_blank" rel="noopener">Art portfolio</a><a href={`mailto:${site.email}`}>{site.email}</a></span>
     </div>
   </footer>
   <script>

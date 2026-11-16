@@ -6,15 +6,14 @@ import { built } from '../data/site';
 <section class="built" id="built" aria-labelledby="builtTitle">
   <div class="wrap">
     <header class="sec-head">
-      <h2 class="display sec-head__title" id="builtTitle">Things I built</h2>
-      <p class="sec-head__lead">Interfaces with real users: a planner, a housing platform, my art portfolio. Open them live or read the code.</p>
+      <h2 class="display sec-head__title" id="builtTitle">Projects</h2>
     </header>
     <ul class="built__list" role="list">
       {built.map((b) => (
         <li class="row">
           <div>
             <span class="row__name">{b.name}</span>
-            <span class="row__what">{b.what}<small>{b.meta}</small></span>
+            <span class="row__what">{b.what}</span>
             <span class="row__go">
               {b.live && <a href={b.live} target="_blank" rel="noopener">Live <Icon name="arrow-up-right" /></a>}
               {b.code && <a href={b.code} target="_blank" rel="noopener">Code <Icon name="code" /></a>}

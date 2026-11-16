@@ -2,16 +2,16 @@
 
 **Live: [tonni19.github.io/SNT](https://tonni19.github.io/SNT/)**
 
-The personal website of **Sadia Noman Tonni**: artist (as *Tortilla*), game asset creator, UI/UX designer and AI × HCI researcher.
+The personal website of **Sadia Noman Tonni**: CSE undergraduate working on human-computer interaction, human-centered AI, game UX, design and creative technology. Also an artist, as *Tortilla*.
 
-A scrolling, illustrated portfolio. The page is a sequence of scroll-driven scenes inspired by poster-style web design, built around my own drawings:
+One scrolling page that covers research, achievements, projects, tools and art, built around my own drawings:
 
-1. **Hero:** my name, huge, with my self-portrait standing in it. Scrolling swells the letters, lifts the drawing, and a night panel rises with a sweeping line of words.
-2. **Fangs:** one of my animations plays until a jaw of cream fangs rises and swallows it, and a statement lands.
-3. **Film strip:** my art pans sideways on a strip of film. Every frame opens that piece on my art portfolio.
-4. **Story:** a sentence reads itself in, word by word.
-5. **Numbers, Built, UI/UX lab, Research, Events, Log:** real counts, shipped interfaces, case-study shelves, papers, competitions and a timeline.
-6. **Ending:** the name rises back letter by letter, with the drawing peeking out.
+1. **Hero:** my name, huge, with my self-portrait standing in it.
+2. **About:** a sentence that reads itself in, a few lines about me, and real counts.
+3. **Interests, Research, Achievements, Projects, Toolkit:** what I study and make, the paper, competitions and jams, things I've built, and the tools I use.
+4. **Art:** my art pans sideways on a strip of film. Every frame opens that piece on my art portfolio.
+5. **UI/UX lab:** case studies and analyses. It appears on its own once the first entry is added to `src/content/uiux`.
+6. **Contact:** email and social profiles; the name rises back letter by letter, with the drawing peeking out.
 
 Palette and type are shared with the art portfolio: deep rose, cream and plum-black; Anton, Space Grotesk and JetBrains Mono.
 
@@ -29,7 +29,6 @@ Scroll scenes use [GSAP ScrollTrigger](https://gsap.com/docs/v3/Plugins/ScrollTr
 Swap the drawings in `heroArt` in `src/data/site.ts`:
 
 - `mascot`: the figure standing in the giant name. A transparent PNG or WebP works best.
-- `night`: the animation behind the fang reveal.
 - `sticker`: the little card in the story section.
 
 Paths starting with `/art/` load from the art portfolio; files you put in `public/` load from here.

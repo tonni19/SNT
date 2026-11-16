@@ -5,8 +5,6 @@
    home as you scroll. Motion off = this file does nothing.
 
    Scenes:
-   1. hero      the name swells and lifts, the mascot climbs, the night rises
-   2. fangs     a jaw of cream fangs swallows the night, a statement lands
    3. strip     the film strip pans sideways
    4. story     the sentence reads itself in, word by word
    5. numbers   count up on arrival
@@ -41,34 +39,6 @@ if (on) {
   });
 
   const q = (s) => document.querySelector(s);
-
-  // ---- 1. hero
-  if (q('.hero')) {
-    gsap.set('.hero__night', { autoAlpha: 1, yPercent: 100 });
-    gsap.timeline({
-      scrollTrigger: { trigger: '.hero', start: 'top top', end: '+=160%', scrub: 0.7, pin: true, anticipatePin: 1 },
-    })
-      .to('.ticker', { autoAlpha: 0, duration: 0.15 }, 0)
-      .to('.hero__corner', { autoAlpha: 0, y: -50, duration: 0.25, stagger: 0.05 }, 0)
-      .to('.hero__word', { scale: 1.75, yPercent: -34, ease: 'power1.in', duration: 0.6 }, 0)
-      .to('.hero__mascot', { yPercent: -38, scale: 1.3, ease: 'power1.in', duration: 0.6 }, 0)
-      .to('.hero__night', { yPercent: 0, ease: 'power3.inOut', duration: 0.45 }, 0.42)
-      .fromTo('.hero__sweep', { xPercent: 12 }, { xPercent: -42, ease: 'none', duration: 0.6 }, 0.42);
-  }
-
-  // ---- 2. fangs
-  if (q('.fang')) {
-    gsap.set('.fang__teeth', { yPercent: 100 }); // starts below the screen; 0 = jaw closed, cream fills it
-    gsap.set('.fang__say', { autoAlpha: 0 });
-    gsap.timeline({
-      scrollTrigger: { trigger: '.fang', start: 'top top', end: '+=180%', scrub: 0.7, pin: true, anticipatePin: 1 },
-    })
-      .fromTo('.fang__art video', { scale: 1.18 }, { scale: 1, ease: 'none', duration: 1 }, 0)
-      .to('.fang__caption', { autoAlpha: 0, duration: 0.1 }, 0.25)
-      .to('.fang__teeth', { yPercent: 0, ease: 'power2.inOut', duration: 0.62 }, 0.12)
-      .to('.fang__say', { autoAlpha: 1, duration: 0.12 }, 0.66)
-      .fromTo('.fang__say .display', { yPercent: 30, scale: 0.92 }, { yPercent: 0, scale: 1, ease: 'power3.out', duration: 0.3 }, 0.66);
-  }
 
   // ---- 3. film strip
   const rail = q('.strip__rail');
@@ -114,7 +84,7 @@ if (on) {
   gsap.utils.toArray('.sec-head__title, .contact__title').forEach((el) => {
     gsap.from(el, { yPercent: 40, opacity: 0, duration: 1.1, ease: 'power4.out', scrollTrigger: { trigger: el, start: 'top 86%', once: true } });
   });
-  gsap.utils.toArray('.built__list, .lab__shelves, .log__list, .events .wrap').forEach((group) => {
+  gsap.utils.toArray('.built__list, .lab__shelves, .events .wrap, .interests__grid, .skills__grid').forEach((group) => {
     const kids = group.matches('.events .wrap') ? group.querySelectorAll('.event') : group.children;
     gsap.from(kids, { y: 50, opacity: 0, duration: 0.9, stagger: 0.09, ease: 'power3.out', scrollTrigger: { trigger: group, start: 'top 82%', once: true } });
   });

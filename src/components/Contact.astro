@@ -1,18 +1,18 @@
 ---
-/** CONTACT: the ending returns to the hero: rose field, the giant name, the mascot peeking. */
+/** CONTACT: email, social profiles and the art portfolio. The ending returns to the hero: rose field, the giant name, the mascot. */
 import { Image } from 'astro:assets';
 import Icon from './Icon.astro';
-import { site, heroArt } from '../data/site';
+import { site, heroArt, socials } from '../data/site';
 const src = (p: string) => (p.startsWith('/art/') ? `${site.artPortfolio}${p}` : p);
 ---
 <section class="contact" id="contact" aria-labelledby="contactTitle">
   <div class="wrap contact__grid">
-    <h2 class="display contact__title" id="contactTitle">Let's make something strange</h2>
+    <h2 class="display contact__title" id="contactTitle">Say hello</h2>
     <div class="contact__side">
-      <p>Art commissions, game assets, interface work or research: write to me and I'll answer, usually around 1:44 am.</p>
+      <p>Open to research collaborations, game projects, UI/UX work and art commissions. Email is the best way to reach me.</p>
       <div class="contact__links">
         <a class="btn btn--plum" href={`mailto:${site.email}`}><Icon name="mail" /> {site.email}</a>
-        <a class="btn btn--line" href={site.github} target="_blank" rel="noopener"><span>GitHub</span> <Icon name="github" /></a>
+        {socials.filter((l) => l.url).map((l) => <a class="btn btn--line" href={l.url!} target="_blank" rel="noopener"><span>{l.label}</span> <Icon name={l.icon} /></a>)}
         <a class="btn btn--line" href={site.artPortfolio} target="_blank" rel="noopener"><span>Art portfolio</span> <Icon name="arrow-up-right" /></a>
       </div>
     </div>

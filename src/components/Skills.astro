@@ -1,0 +1,19 @@
+---
+/** SKILLS: tools grouped by what they are for. Edit the groups in src/data/site.ts. */
+import { skillGroups } from '../data/site';
+---
+<section class="skills" id="skills" aria-labelledby="skillsTitle">
+  <div class="wrap">
+    <header class="sec-head">
+      <h2 class="display sec-head__title" id="skillsTitle">Toolkit</h2>
+    </header>
+    <div class="skills__grid">
+      {skillGroups.map((g) => (
+        <div class="skills__group">
+          <h3>{g.title}</h3>
+          <ul role="list">{g.items.map((t) => <li>{t.name}</li>)}</ul>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

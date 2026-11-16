@@ -1,5 +1,5 @@
 ---
-/** UI/UX LAB: three shelves that fill from src/content/uiux by `type`. */
+/** UI/UX LAB: three shelves that fill from src/content/uiux by `type`. Hidden until the first entry exists. */
 import { getCollection } from 'astro:content';
 import Icon from './Icon.astro';
 import { uiuxShelves } from '../data/site';
@@ -7,11 +7,11 @@ import { url } from '../lib/url';
 const entries = (await getCollection('uiux', ({ data }) => !data.draft)).sort((a, b) => +b.data.date - +a.data.date);
 const fmt = (d: Date) => d.toLocaleDateString('en-GB', { month: 'short', year: 'numeric' });
 ---
+{entries.length > 0 && (
 <section class="lab" id="lab" aria-labelledby="labTitle">
   <div class="wrap">
     <header class="sec-head">
       <h2 class="display sec-head__title" id="labTitle">UI/UX lab</h2>
-      <p class="sec-head__lead">Where I take products apart: analyses of real product websites, case studies of my own work, and recreations of interfaces I admire.</p>
     </header>
     <div class="lab__shelves">
       {uiuxShelves.map((shelf) => {
@@ -31,3 +31,4 @@ const fmt = (d: Date) => d.toLocaleDateString('en-GB', { month: 'short', year: '
     </div>
   </div>
 </section>
+)}

@@ -1,13 +1,11 @@
 ---
 /**
- * HERO: the giant name with the mascot standing in it. On scroll (motion.js)
- * the letters swell and lift, the mascot climbs out, and the night rises
- * underneath with a sweeping line of words.
+ * HERO: the giant name with the mascot standing in it. No scroll effects:
+ * swap the mascot in src/data/site.ts (heroArt) for your own artwork.
  */
 import { Image } from 'astro:assets';
 import { site, ticker, heroArt } from '../data/site';
 const src = (p: string) => (p.startsWith('/art/') ? `${site.artPortfolio}${p}` : p);
-const sweep = ['Draw', 'Build', 'Research', 'Draw', 'Build', 'Research'];
 ---
 <section class="hero" id="top" aria-labelledby="heroTitle">
   <div class="ticker" aria-hidden="true">
@@ -21,12 +19,5 @@ const sweep = ['Draw', 'Build', 'Research', 'Draw', 'Build', 'Research'];
     <div class="hero__mascot">
       <Image src={src(heroArt.mascot.src)} alt={heroArt.mascot.alt} width={heroArt.mascot.width} height={heroArt.mascot.height} widths={[360, 560, 820]} sizes="(max-width: 640px) 62vw, 30vw" loading="eager" />
     </div>
-  </div>
-
-  <p class="hero__corner hero__corner--l"><span class="hero__name">{site.name}, also Tortilla</span>Artist and game asset maker</p>
-  <p class="hero__corner hero__corner--r">Designer and AI × HCI researcher</p>
-
-  <div class="hero__night" aria-hidden="true">
-    <p class="hero__sweep">{sweep.map((w) => <>{w} <span>/</span> </>)}</p>
   </div>
 </section>

@@ -3,8 +3,10 @@
 # Files starting with "_" are ignored, so this template never shows on the site.
 title: "What you did, in a few words"
 event: "Name of the competition or event"
-type: competition    # competition | hackathon | game-jam | event | workshop | volunteering | other
-date: 2026-03-14
+type: competition    # publication | competition | hackathon | game-jam | event | workshop | volunteering | other
+year: 2026
+order: 8                # lower numbers come first
+# date: 2026-03-14   # optional, if you know the exact day
 role: "Character artist"          # optional
 team: "Team name"                 # optional
 team_members: [You, Teammate]     # optional

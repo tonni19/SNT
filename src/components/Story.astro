@@ -1,10 +1,10 @@
 ---
 /**
  * STORY: one big sentence that reads itself in, word by word, as you scroll
- * (motion.js), then three short facts about what I do.
+ * (motion.js), then three short paragraphs.
  */
 import { Image } from 'astro:assets';
-import { site, story, about, skills, heroArt } from '../data/site';
+import { site, story, about, heroArt } from '../data/site';
 const words = story.split(' ');
 const src = (p: string) => (p.startsWith('/art/') ? `${site.artPortfolio}${p}` : p);
 ---
@@ -16,10 +16,9 @@ const src = (p: string) => (p.startsWith('/art/') ? `${site.artPortfolio}${p}` :
       <Image src={src(heroArt.sticker.src)} alt={heroArt.sticker.alt} width={heroArt.sticker.width} height={heroArt.sticker.height} widths={[220, 380]} sizes="190px" />
     </div>
     <div class="story__aside">
-      <div><h3>Art</h3><p>{about.art}</p></div>
-      <div><h3>Build</h3><p>{about.build}</p></div>
-      <div><h3>Research</h3><p>{about.research} I study at {site.studies}.</p></div>
-      <div style="grid-column: 1 / -1"><h3>Tools and skills</h3><ul>{skills.map((s) => <li>{s}</li>)}</ul></div>
+      <div><h3>Who I am</h3><p>{site.name}. Computer Science and Engineering undergraduate at {site.studies}, and Tortilla when I'm drawing.</p></div>
+      <div><h3>Research</h3><p>{about.research}</p></div>
+      <div><h3>Games and design</h3><p>{about.games}</p></div>
     </div>
   </div>
 </section>

@@ -1,14 +1,15 @@
 ---
 title: "A Small Journey"
-event: "IUT 12th ICT Fest 2026 Game Jam"
+event: "12th IUT ICT Fest 2026 GameJam"
 type: game-jam
+year: 2026
+order: 6
 date: 2026-07-20
 role: "Character and game artist"
 team: "Phat_Cat"
 team_members: [Samiha Mahzabin, Syed Zayan Anwar, Sadia Noman Tonni]
 tools: [Godot 4, Aseprite, Clip Studio]
-# If the team made the onsite round (top 20 of 47), say so here.
-result: "Shipped a playable game, one of 47 entries"
+result: "Finalist"
 # Your own words. Uncomment and write these, and they replace "reflection coming soon":
 # learned: >-
 #   ...

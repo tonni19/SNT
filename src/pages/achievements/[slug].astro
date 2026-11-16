@@ -13,24 +13,29 @@ interface Props { entry: CollectionEntry<'achievements'>; }
 const { entry } = Astro.props;
 const d = entry.data;
 const { Content } = await render(entry);
+const when = d.date
+  ? d.date.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })
+  : d.year ? String(d.year) : '';
+const reflections = [['What I learned', d.learned], ['The experience', d.experience], ['My verdict', d.verdict]] as const;
+const hasReflection = reflections.some(([, t]) => t);
 ---
 <Base title={`${d.title} · Sadia Noman Tonni`} description={`${d.event}: ${d.result}`}>
   <article class="page">
     <div class="wrap">
-      <a class="page__back" href={url('/#events')}><Icon name="arrow-left" /> All events</a>
+      <a class="page__back" href={url('/#events')}><Icon name="arrow-left" /> All achievements</a>
       <h1 class="display page__title">{d.title}</h1>
-      <p class="page__lead">{d.event}. {d.result}.</p>
+      <p class="page__lead">{d.event !== d.title ? `${d.event}. ` : ''}{d.result}.</p>
       <ul class="page__meta" role="list">
-        <li>{d.date.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}</li>
+        {when && <li>{when}</li>}
         {d.role && <li>Role: <b>{d.role}</b></li>}
         {d.team && <li>Team: <b>{d.team}{d.team_members.length ? ` (${d.team_members.join(', ')})` : ''}</b></li>}
         {d.tools.length > 0 && <li>Tools: <b>{d.tools.join(', ')}</b></li>}
       </ul>
-      <div class="page__panels">
-        <div><h2>What I learned</h2><p>{d.learned ?? 'Reflection coming soon.'}</p></div>
-        <div><h2>The experience</h2><p>{d.experience ?? 'Reflection coming soon.'}</p></div>
-        <div><h2>My verdict</h2><p>{d.verdict ?? 'Reflection coming soon.'}</p></div>
-      </div>
+      {hasReflection && (
+        <div class="page__panels">
+          {reflections.map(([h, t]) => <div><h2>{h}</h2><p>{t ?? 'Reflection coming soon.'}</p></div>)}
+        </div>
+      )}
       <div class="prose">
         <Content />
         {d.links.length > 0 && (<><h2>Links</h2><ul>{d.links.map((l) => <li><a href={l.url} target="_blank" rel="noopener">{l.label}</a></li>)}</ul></>)}

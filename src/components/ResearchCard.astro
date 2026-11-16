@@ -17,14 +17,14 @@ const slots = [
   { key: 'poster', label: 'Poster', icon: 'layout', url: d.poster },
   { key: 'code', label: 'Code & data', icon: 'code', url: d.code },
 ];
-const shown = slots.filter((s) => s.url || ['arxiv', 'scholar', 'pdf', 'code'].includes(s.key));
+const shown = slots.filter((s) => s.url || d.soon.includes(s.key as never));
 const Title = full ? 'h1' : 'h3';
 ---
-<article class="paper">
+<article class:list={["paper", { "paper--solo": d.tags.length === 0 }]}>
   <div class="paper__main">
     <p class="paper__meta"><b>{d.type}</b><span>{d.venue}</span><span>{d.year}</span></p>
     <Title class="paper__title">{full ? d.title : <a href={url(`/research/${entry.id}/`)}>{d.title}</a>}</Title>
-    <p class="paper__authors">{d.authors.map((a, i) => <span class:list={{ me: a === 'Sadia Noman Tonni' }}>{a}{i < d.authors.length - 1 ? ', ' : ''}</span>)}</p>
+    {d.authors.length > 0 && <p class="paper__authors">{d.authors.map((a, i) => <span>{a}{i < d.authors.length - 1 ? ', ' : ''}</span>)}</p>}
     {!full && <p class="paper__summary">{d.summary}</p>}
     <ul class="paper__links" role="list">
       {shown.map((s) => (
@@ -34,16 +34,16 @@ const Title = full ? 'h1' : 'h3';
             : <span class="is-soon" title="Not public yet"><Icon name={s.icon} />{s.label} <em>soon</em></span>}
         </li>
       ))}
-      <li>
-        {d.bibtex
-          ? <button type="button" data-copy={d.bibtex}><Icon name="copy" /><span>Copy BibTeX</span></button>
-          : <span class="is-soon" title="The citation arrives with the preprint"><Icon name="copy" />Cite <em>soon</em></span>}
-      </li>
+      {d.bibtex && <li>
+        <button type="button" data-copy={d.bibtex}><Icon name="copy" /><span>Copy BibTeX</span></button>
+      </li>}
       {!full && <li class="more"><a href={url(`/research/${entry.id}/`)}>Read more <Icon name="arrow-right" /></a></li>}
     </ul>
   </div>
-  <div class="paper__status">
-    <small>Status</small>
-    <p>{d.status}</p>
-  </div>
+  {d.tags.length > 0 && (
+    <div class="paper__status">
+      <small>Topics</small>
+      <ul role="list">{d.tags.map((t) => <li>{t}</li>)}</ul>
+    </div>
+  )}
 </article>
