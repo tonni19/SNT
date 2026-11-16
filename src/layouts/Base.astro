@@ -11,7 +11,7 @@ import { url } from '../lib/url';
 
 interface Props { title?: string; description?: string; }
 const {
-  title = `${site.name} · HCI researcher, designer, game artist`,
+  title = site.name,
   description = `${site.name}: CSE undergraduate working on human-computer interaction, human-centered AI, game UX, design and creative technology. Also draws as Tortilla.`,
 } = Astro.props;
 ---
