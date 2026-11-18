@@ -1,79 +1,96 @@
-# SNT · Sadia Noman Tonni
+# SNT
 
-**Live: [tonni19.github.io/SNT](https://tonni19.github.io/SNT/)**
+### Sadia Noman Tonni — research, design, games and art on one scrolling page
 
-The personal website of **Sadia Noman Tonni**: CSE undergraduate working on human-computer interaction, human-centered AI, game UX, design and creative technology. Also an artist, as *Tortilla*.
+**[tonni19.github.io/SNT](https://tonni19.github.io/SNT/)** · [Art portfolio](https://tortfolio-art.vercel.app/) · [GitHub](https://github.com/tonni19)
 
-One scrolling page that covers research, achievements, projects, tools and art, built around my own drawings:
+I study how people understand, trust and stay in control of AI, and I make the things that sit around that question: interfaces, game art, levels and animation. This site holds all of it in one place, built around my own drawings rather than a template.
 
-1. **Hero:** my name, huge, with my self-portrait standing in it.
-2. **About:** a sentence that reads itself in, a few lines about me, and real counts.
-3. **Interests, Research, Achievements, Projects, Toolkit:** what I study and make, the paper, competitions and jams, things I've built, and the tools I use.
-4. **Art:** my art pans sideways on a strip of film. Every frame opens that piece on my art portfolio.
-5. **UI/UX lab:** case studies and analyses. It appears on its own once the first entry is added to `src/content/uiux`.
-6. **Contact:** email and social profiles; the name rises back letter by letter, with the drawing peeking out.
+![The SNT home page](docs/screenshots/home.png)
 
-Palette and type are shared with the art portfolio: deep rose, cream and plum-black; Anton, Space Grotesk and JetBrains Mono.
+---
 
-![Home](docs/screenshots/home.png)
+## The page, top to bottom
 
-- **Art portfolio:** [tortfolio-art.vercel.app](https://tortfolio-art.vercel.app/)
-- **GitHub:** [github.com/tonni19](https://github.com/tonni19)
+| | Section | What it holds |
+|---|---|---|
+| 01 | **Hero** | My name at poster scale, with my self-portrait standing in it. |
+| 02 | **About** | One sentence that reads itself in as you scroll, three short notes and a few honest counts. |
+| 03 | **Interests** | Seven research interests, from human-AI interaction to procedural content generation, beside the creative and game work I love. |
+| 04 | **Research** | Papers with their arXiv, code and BibTeX links. |
+| 05 | **Achievements** | Olympiads, a datathon, competitions and a game jam, in a set order. |
+| 06 | **Projects** | Shetu, *A Small Journey*, Tortfolio, Nestly, AppleDHD and UIUNest, each with its live site and code. |
+| 07 | **Toolkit** | The tools I use, grouped by what they are for. |
+| 08 | **Art** | My drawings on a strip of film. Each frame opens that piece on the art portfolio. |
+| 09 | **Say hello** | Email and profiles, and the name rising back up letter by letter. |
 
-## Motion
+A UI/UX lab for case studies is built in and stays hidden until its first entry exists.
 
-Scroll scenes use [GSAP ScrollTrigger](https://gsap.com/docs/v3/Plugins/ScrollTrigger/) with [Lenis](https://github.com/darkroomengineering/lenis) smooth scrolling, all in `src/scripts/motion.js`. Every section is laid out in its finished state in HTML and CSS, and the script only adds starting positions and scrubs them home. With **Motion off** (the button in the top bar, saved per visitor, and the default for anyone whose system asks for reduced motion) the page is a calm, normal-scrolling page with nothing pinned, flashing or moving.
+## Two switches, both remembered
 
-## Your own art
+**Day / Night.** Day is the original rose, cream and plum. Night turns the cream sections and the hero to a warm dark and sets the name in rose. With motion on, the new theme grows out of the switch in a circle. The choice is saved per visitor.
 
-Swap the drawings in `heroArt` in `src/data/site.ts`:
+**Motion.** On by default: smooth scrolling, a film strip that pans as you scroll, words that read themselves in, numbers that count up. Off gives a calm page that scrolls normally, with nothing pinned or moving. It switches instantly without reloading, the page stays where you are, and it starts off for anyone whose system asks for reduced motion.
 
-- `mascot`: the figure standing in the giant name. A transparent PNG or WebP works best.
-- `sticker`: the little card in the story section.
+## Design
 
-Paths starting with `/art/` load from the art portfolio; files you put in `public/` load from here.
+| | |
+|---|---|
+| **Colour** | Rose `#e0466d`, cream `#f6f1e7`, plum `#191216`, shared with the art portfolio |
+| **Type** | Anton for display, Space Grotesk for text, JetBrains Mono for labels |
+| **Icons** | [Lucide](https://lucide.dev), as an inline sprite |
+| **Art** | Linked from the art portfolio, never copied, so one source of truth |
 
-## Run it
+## Built with
+
+[Astro](https://astro.build) 7 with typed content collections and TypeScript, `astro:assets` for responsive images, and [GSAP ScrollTrigger](https://gsap.com/docs/v3/Plugins/ScrollTrigger/) with [Lenis](https://github.com/darkroomengineering/lenis) for the scroll scenes. There is no client framework: the page is static HTML and CSS, and the small scripts only add motion and the switches.
+
+```
+src/
+├── components/   one file per section (Hero, Story, Research, Events, Built, ...)
+├── content/      everything that grows: research, achievements, uiux, art.json
+├── data/site.ts  everything that rarely changes: name, story, interests, projects, tools, links
+├── layouts/      the page shell, fonts and the before-first-paint theme and motion setup
+├── scripts/      motion.js (scroll scenes) and ui.js (header, switches, menu)
+└── styles/       global.css with the design tokens and both themes
+```
+
+## Run it locally
 
 Needs Node.js 22.23 or newer.
 
 ```bash
 npm install
-npm run dev        # http://127.0.0.1:4321 (live reload)
+npm run dev        # http://127.0.0.1:4321/SNT/ with live reload
 npm run build      # static site in dist/
 npm run preview    # serve the built site
 npm run check      # type-check content and code
 ```
 
-Every push to `main` builds the site and publishes it to GitHub Pages at [tonni19.github.io/SNT](https://tonni19.github.io/SNT/) (`.github/workflows/deploy.yml`). Locally the site also lives under `/SNT/`, e.g. `http://127.0.0.1:4321/SNT/`.
+Every push to `main` builds the site and publishes it to GitHub Pages through `.github/workflows/deploy.yml`. The `/SNT/` sub-path comes from `base` in `astro.config.mjs`, and internal links go through `url()` in `src/lib/url.ts`, so renaming the repo means changing one line.
 
-The sub-path comes from `base: '/SNT'` in `astro.config.mjs`. Internal links go through `url()` in `src/lib/url.ts`, so if the repo is renamed, only `base` changes.
+## Adding work
 
-## Adding your work
-
-Everything that grows lives in `src/content/`. Each folder has a `_TEMPLATE.md` that explains every field. Files starting with `_` never show on the site.
+Everything that grows lives in `src/content/`. Each folder has a `_TEMPLATE.md` that explains every field. Files that start with `_` never appear on the site.
 
 | To add | Do this |
 |---|---|
-| A paper or poster | `npm run new research my-paper`, fill it in, delete `draft: true`. Add `arxiv:`, `scholar:`, `pdf:` and `bibtex:` when they exist; until then the card shows "soon". |
-| A UI/UX analysis, case study or recreation | `npm run new uiux product-name`. Set `type:` to `analysis`, `case-study` or `recreation` and it lands on the right shelf. The markdown body becomes the case study page. |
-| A competition, jam or event | `npm run new achievements event-name`. Fill in `result`, `learned`, `experience`, `verdict` and an optional `rating` from 1 to 5. |
-| A piece of art | Add it to your Tortfolio repo as usual, then run `npm run sync-art` here. It reads `../tortfolio` and rebuilds `src/content/art.json` with every piece, its title and its own page link. Images are linked from the art site, not copied. In `art.json`, set `"featured": true` to put a piece at the front of the film strip or `"hidden": true` to leave it out; a sync keeps both. |
+| A paper or poster | `npm run new research my-paper`, fill it in and remove `draft: true`. Links such as `arxiv`, `pdf` and `bibtex` appear only once they exist. |
+| An achievement | `npm run new achievements event-name`. Set `order` to place it in the list. `learned`, `experience` and `verdict` add a written reflection to its page. |
+| A UI/UX case study | `npm run new uiux product-name` with `type: analysis`, `case-study` or `recreation`. The lab appears with the first one. |
+| A piece of art | Add it to the Tortfolio repo, then run `npm run sync-art`. It reads `../tortfolio` and rebuilds `src/content/art.json`. Mark a piece `"featured": true` to lead the film strip or `"hidden": true` to leave it out. |
+| A project, interest, tool or profile | Edit the lists in `src/data/site.ts`. A profile with no link yet, such as LinkedIn, stays hidden until you add it. |
 
-The schemas in `src/content.config.ts` check every entry. A missing field or a broken link stops `npm run dev` with a clear message instead of breaking the page.
+Content schemas in `src/content.config.ts` check every entry, so a missing field or broken link stops the build with a clear message instead of breaking the page.
 
-Things that rarely change (name, links, the hero art, the story sentence, what I've built, the timeline) are in `src/data/site.ts`.
+**Your own hero art:** swap `heroArt.mascot` (the figure in the name; a transparent PNG or WebP works best) and `heroArt.sticker` in `src/data/site.ts`. Paths that start with `/art/` load from the art portfolio; files in `public/` load from here.
 
 ## Accessibility
 
-- Every control is a real button or link with a label, and the whole site works from the keyboard. A skip link jumps past the header.
-- Every page works without JavaScript; the film strip simply becomes a sideways-scrolling row.
-- With Motion off nothing is pinned, scrubbed or autoplayed.
-
-## Built with
-
-[Astro](https://astro.build) 7 with content collections and TypeScript, optimised images through `astro:assets`, GSAP ScrollTrigger and Lenis for the scroll scenes, and no client framework.
+- Every control is a real button or link with a label, the whole site works from the keyboard, and a skip link jumps past the header.
+- Without JavaScript every section still renders, and the film strip becomes a sideways-scrolling row.
+- With motion off nothing is pinned, scrubbed or autoplayed.
 
 ## Rights
 
-The code is © 2026 Sadia Noman Tonni. The artwork shown here is my own, linked from my art portfolio, and may not be reused without permission. Icons are from Lucide under the ISC licence.
+Code © 2026 Sadia Noman Tonni. The artwork is my own, linked from my art portfolio, and may not be reused without permission. Icons from Lucide under the ISC licence.

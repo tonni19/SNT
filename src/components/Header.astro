@@ -1,8 +1,9 @@
 ---
 /**
- * The fixed bar: brand, four links, the Motion switch, one action, and a
- * full-screen menu on phones. It hides while you scroll down and comes back
- * when you scroll up (set by motion.js / ui.js).
+ * The fixed bar: brand, links, the Motion and Day/Night switches, one action,
+ * and a full-screen menu on phones (which carries the same two switches).
+ * It turns solid once anything scrolls under it and hides while you scroll
+ * down (ui.js).
  */
 import { Image } from 'astro:assets';
 import Icon from './Icon.astro';
@@ -19,10 +20,14 @@ const avatar = `${site.artPortfolio}/art/my-avatars/tortilla.webp`;
     <nav class="bar__nav" aria-label="Main">
       {nav.map((n) => <a href={url(`/#${n.id}`)}>{n.label}</a>)}
     </nav>
-    <button class="bar__motion" id="motionBtn" type="button" aria-pressed="true">
-      <Icon name="zap" class="m-on" /><Icon name="zap-off" class="m-off" />
-      <span>Motion <b class="m-on">on</b><b class="m-off">off</b></span>
-    </button>
+    <div class="bar__tools">
+      <button class="tog tog--motion" data-motion-toggle type="button" aria-pressed="true">
+        <span class="tog__label">Motion</span><span class="tog__state"><b class="m-on">On</b><b class="m-off">Off</b></span>
+      </button>
+      <button class="tog tog--theme" data-theme-toggle type="button" aria-pressed="false">
+        <span class="tog__opt" data-v="day">Day</span><span class="tog__opt" data-v="night">Night</span>
+      </button>
+    </div>
     <a class="btn btn--plum bar__cta" href={url('/#contact')}>Let's talk <Icon name="arrow-up-right" /></a>
     <button class="bar__menu" id="menuBtn" type="button" aria-expanded="false" aria-controls="sheet"><Icon name="menu" /> Menu</button>
   </div>
@@ -31,4 +36,12 @@ const avatar = `${site.artPortfolio}/art/my-avatars/tortilla.webp`;
   <button class="sheet__close" id="sheetClose" type="button"><Icon name="x" /> Close</button>
   {nav.map((n) => <a href={url(`/#${n.id}`)}>{n.label}</a>)}
   <a href={url('/#contact')}>Contact</a>
+  <div class="sheet__tools">
+    <button class="tog tog--motion" data-motion-toggle type="button" aria-pressed="true">
+      <span class="tog__label">Motion</span><span class="tog__state"><b class="m-on">On</b><b class="m-off">Off</b></span>
+    </button>
+    <button class="tog tog--theme" data-theme-toggle type="button" aria-pressed="false">
+      <span class="tog__opt" data-v="day">Day</span><span class="tog__opt" data-v="night">Night</span>
+    </button>
+  </div>
 </nav>
